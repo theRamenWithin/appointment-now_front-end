@@ -6,6 +6,9 @@ import {
   Link
 } from "react-router-dom";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+
 import logoSmall from './assets/logo-small.svg';
 import './App.css';
 
@@ -16,8 +19,8 @@ export default function App() {
       <div>
         <nav className="navbar">
           <div className="nav-left">
-            <img src="logoSmall" alt="Logo typeface"></img>
-            <ul>
+            <img src={logoSmall} alt="Logo typeface"></img>
+            <ul className="nav-buttons">
               <li>
                 <Link to="/signup">Sign Up</Link>
               </li>
@@ -28,7 +31,7 @@ export default function App() {
           </div>
           
           <div className="nav-right">
-            <ul>
+            <ul className="nav-buttons">
               <li>
                 <Link to="/">About</Link>
               </li>
@@ -65,7 +68,12 @@ export default function App() {
 }
 
 function About() {
-  return <h2>About</h2>;
+  return (
+    <div>
+      <h2>About</h2>
+      <FontAwesomeIcon icon={faSearch} />
+    </div>
+  );
 }
 
 function Contact() {
