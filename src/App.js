@@ -6,7 +6,7 @@ import {
   Link
 } from "react-router-dom";
 
-import logo from './logo.svg';
+import logoSmall from './assets/logo-small.svg';
 import './App.css';
 
 
@@ -14,31 +14,49 @@ export default function App() {
   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
+        <nav className="navbar">
+          <div className="nav-left">
+            <img src="logoSmall" alt="Logo typeface"></img>
+            <ul>
+              <li>
+                <Link to="/signup">Sign Up</Link>
+              </li>
+              <li>
+                <Link to="/signin">Sign In</Link>
+              </li>
+            </ul>
+          </div>
+          
+          <div className="nav-right">
+            <ul>
+              <li>
+                <Link to="/">About</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact Us</Link>
+              </li>
+              <li>
+                <Link to="/blog">Blog</Link>
+              </li>
+            </ul>
+          </div>
         </nav>
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/about">
-            <About />
+          <Route path="/signup">
+            <SignUp />
           </Route>
-          <Route path="/users">
-            <Users />
+          <Route path="/signin">
+            <SignIn />
+          </Route>
+          <Route path="/blog">
+            <Blog />
+          </Route>
+          <Route path="/Contact">
+            <Contact />
           </Route>
           <Route path="/">
-            <Home />
+            <About />
           </Route>
         </Switch>
       </div>
@@ -46,16 +64,22 @@ export default function App() {
   );
 }
 
-function Home() {
-  return <h2>Home</h2>;
-}
-
 function About() {
   return <h2>About</h2>;
 }
 
-function Users() {
-  return <h2>Users</h2>;
+function Contact() {
+  return <h2>Contact Us</h2>;
 }
 
-export default App;
+function Blog() {
+  return <h2>Blog</h2>;
+}
+
+function SignUp() {
+  return <h2>SignUp</h2>;
+}
+
+function SignIn() {
+  return <h2>Sign In</h2>;
+}
