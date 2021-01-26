@@ -70,3 +70,13 @@ a:hover {
 .about-container h1 {
   text-align: center;
 }
+
+/* Edit Organisation */
+
+.curved-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(78, 197, 230, 0.20);
+  border-radius: 15px;
+  padding: 20px;
+}
