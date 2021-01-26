@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TransitionsModal() {
+function TransitionsModal() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -54,6 +54,24 @@ export default function TransitionsModal() {
           </div>
         </Fade>
       </Modal>
+    </div>
+  );
+}
+
+export default function EditOrganisation() {
+  return (
+    <div className="curved-container">
+      Edit Organization
+      
+      <div className="edit-org-fields">
+
+      </div>
+      <div className="edit-org-buttons">
+        Save
+        Reset
+        {TransitionsModal}
+      </div>
+
     </div>
   );
 }
