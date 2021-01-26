@@ -1,43 +1,53 @@
 import React from 'react'
 
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-
 import { makeStyles } from '@material-ui/core/styles';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
 
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: '100%',
   },
 }));
 
 export default function About() {
   const classes = useStyles();
+  const [values, setValues] = React.useState({
+    search: '',
+  });
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
 
   return (
-    <div className="about-container">
+    <div className="about-container curved-container">
       <h1>Search for Organizations</h1>
       
-      <form className={classes.root} noValidate autoComplete="off">
-        <TextField 
-          id="outlined-search" 
-          label="Search field" 
-          type="search" 
-          variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon font-size="large" />
-              </InputAdornment>
-            ),
-          }} 
+      <FormControl fullWidth className={classes.margin} variant="outlined">
+        <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+        <OutlinedInput
+          id="outlined-adornment-amount"
+          value={values.search}
+          onChange={handleChange('search')}
+          startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
+          labelWidth={60}
         />
-      </form>
+      </FormControl>
 
       <hr/>
 
