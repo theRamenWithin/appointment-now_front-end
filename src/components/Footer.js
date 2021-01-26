@@ -1,7 +1,10 @@
 import React from 'react';
 
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
+import { Link } from "react-router-dom";
+
+import InstagramIcon from '@material-ui/icons/Instagram';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import FacebookIcon from '@material-ui/icons/Facebook';
 
 function handleClick(event) {
   event.preventDefault();
@@ -10,16 +13,29 @@ function handleClick(event) {
 
 export default function Footer() {
   return (
-    <Breadcrumbs aria-label="breadcrumb">
-      <Link color="inherit" href="/" onClick={handleClick}>
-        About
-      </Link>
-      <Link color="inherit" href="/contact" onClick={handleClick}>
-        Contact
-      </Link>
-      <Link color="inherit" href="/blog" onClick={handleClick}>
-        Blog
-      </Link>
-    </Breadcrumbs>
+    <>
+      <div className="footer">
+
+        <div className="foot-left">
+          AppointmentNow® Ltd.
+        </div>
+
+        <div className="foot-mid">
+          <ul>
+            <li><Link to={'/'} className="nav-link">About </Link></li>
+            <li><Link to={'/contact'} className="nav-link"> Contact </Link></li>
+            <li><Link to={'/blog'} className="nav-link"> Blog</Link></li>
+          </ul>
+        </div>
+
+        <div className="foot-right">
+          <InstagramIcon fontSize="large" />
+          <TwitterIcon fontSize="large" />
+          <FacebookIcon fontSize="large" />
+        </div>
+        
+      </div>
+    </>
   );
 }
+
