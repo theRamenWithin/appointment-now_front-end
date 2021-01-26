@@ -1,3 +1,72 @@
 *, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+}
+
+/* List items */
+
+ul li {
+  list-style-type: none;
+  display: inline;
+}
+
+/* Anchor links */
+
+a:link, a:visited, a:hover {
+  text-decoration: none;
+}
+
+a:hover {
+  font-size: 95%;
+}
+
+.nav a:link {
+  color: black;
+}
+
+.footer a:link {
+  color: white;
+}
+
+/* Navbar */
+
+.nav {
+  font-size: 1.5rem;
+  padding: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left {
+  display: inherit;
+  justify-content: space-between;
+}
+
+.nav-right {
+  display: inherit;
+  justify-content: space-between;
+}
+
+/* Footer */
+
+.footer {
+  font-size: 1.1rem;
+  padding: 60px 20px 20px 20px;
+  background-color: #3D99B3;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* About */
+
+.about-container h1 {
+  text-align: center;
 }
