@@ -1,151 +1,114 @@
-import React from 'react'
+import React from 'react';
+import { Link } from "react-router-dom";
 
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
 import logoLarge from '../assets/logo-large.svg';
-
-const usertypes = [
-  {
-    value: 'Customer',
-    label: 'Customer',
-  },
-  {
-    value: 'Provider',
-    label: 'Provider',
-  },
-]
+import OR from '../assets/OR.svg';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  paper: {
+    marginTop: theme.spacing(8),
     display: 'flex',
-    flexWrap: 'wrap',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  withoutLabel: {
+
+  form: {
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
-  textField: {
-    width: '25ch',
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   },
 }));
 
 export default function SignUp() {
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    email: '',
-    password: '',
-    password2: '',
-    showPassword: false,
-    showPassword2: false,
-  });
-  const [usertype, setUsertype] = React.useState('Customer');
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleClickShowPassword2 = () => {
-    setValues({ ...values, showPassword2: !values.showPassword2 });
-  };
-
-  const handleMouseDownPassword2 = (event) => {
-    event.preventDefault();
-  };
 
   return (
-    <div className="curved-container">
-      {/* Logo */}
-      <img src={logoLarge} alt="Logo Large" width="100px" />
-
-      {/* Email Address */}
-      <FormControl variant="outlined">
-        <InputLabel htmlFor="component-outlined">Email Address</InputLabel>
-        <OutlinedInput id="component-outlined" value={values.email} onChange={handleChange} label="Email Address" />
-      </FormControl>
-
-      {/* Password */}
-      <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={values.showPassword ? 'text' : 'password'}
-          value={values.password}
-          onChange={handleChange('password')}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-          labelWidth={70}
-        />
-      </FormControl>
-
-      {/* Reneter Password */}
-      <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Re-enter Password</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={values.showPassword2 ? 'text' : 'password2'}
-          value={values.password2}
-          onChange={handleChange('password2')}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password2 visibility"
-                onClick={handleClickShowPassword2}
-                onMouseDown={handleMouseDownPassword2}
-                edge="end"
-              >
-                {values.showPassword2 ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-          labelWidth={70}
-        />
-      </FormControl>
-
-      {/* Customer Select */}
-      <TextField
-        id="outlined-select-currency"
-        select
-        label="User Type"
-        value={usertype}
-        onChange={handleChange}
-        variant="outlined"
-      >
-        {usertypes.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
+    <Container component="main" maxWidth="sm" className="curved-container">
+      <CssBaseline />
+      <div className="logo">
+        <img src={logoLarge} alt="Logo large"/>
+      </div>
+      
+      <div className={classes.paper}>
+        <img src={OR} alt="OR line"/>
+        <form className={classes.form} noValidate>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                InputProps={{
+                    style: {
+                      backgroundColor: "white"
+                    },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                InputProps={{
+                    style: {
+                      backgroundColor: "white"
+                    },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="confirm-password"
+                label="Confirm Password"
+                type="password"
+                id="confirm-password"
+                autoComplete="current-password"
+                InputProps={{
+                    style: {
+                      backgroundColor: "white"
+                    },
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Sign Up
+          </Button>
+          <Grid container justify="center">
+            <Grid item>
+              Already have an account? <Link to={'/signin'} variant="body2">Sign in</Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+    </Container>
   );
 }
