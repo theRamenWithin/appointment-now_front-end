@@ -16,10 +16,6 @@ a:link, a:visited, a:hover {
   text-decoration: none;
 }
 
-a:hover {
-  font-size: 95%;
-}
-
 .nav a:link {
   color: black;
 }
@@ -79,4 +75,19 @@ a:hover {
   background-color: rgba(78, 197, 230, 0.20);
   border-radius: 15px;
   padding: 20px;
+}
+
+/* Sign Up */
+
+.curved-container {
+  position: relative;
+  margin-top: 10vh;
+}
+
+.curved-container .logo {
+  position: absolute;
+  /* margin: auto; */
+  left: 50%;
+  top: -10vh;
+  transform: translate(-50%);
 }
