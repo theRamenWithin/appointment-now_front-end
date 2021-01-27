@@ -33,7 +33,7 @@ export default function SignIn() {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="sm" className="curved-container">
+    <Container component="main" maxWidth="sm" className="curved-container with-logo">
       <CssBaseline />
       <div className="logo">
         <img src={logoLarge} alt="Logo large"/>

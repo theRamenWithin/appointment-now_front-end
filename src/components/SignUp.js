@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
@@ -32,7 +31,7 @@ export default function SignUp() {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="sm" className="curved-container">
+    <Container component="main" maxWidth="sm" className="curved-container with-logo">
       <CssBaseline />
       <div className="logo">
         <img src={logoLarge} alt="Logo large"/>
