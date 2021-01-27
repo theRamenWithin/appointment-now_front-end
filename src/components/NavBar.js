@@ -9,7 +9,7 @@ export default function NavBar() {
     return (
       <nav className="nav">
         <div className="nav-left">
-          <img src={logoSmall} alt="Logo typeface"/> 
+          <img src={logoSmall} alt="Logo typeface"/>
           <ul>
             <li><Link to={'/signup'} className="nav-link">Sign Up </Link></li>
             <li><Link to={'/signin'} className="nav-link"> Sign In</Link></li>
