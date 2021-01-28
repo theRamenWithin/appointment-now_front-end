@@ -15,6 +15,7 @@
   min-height: 90vh;
   padding: 20px;
   padding-bottom: 9rem;
+  padding-top: 4rem
 }
 
 /* List items */
@@ -41,6 +42,10 @@ a:link, a:visited, a:hover {
 /* Navbar */
 
 .nav {
+  position: absolute;
+  top: 0;
+  height: 3rem;
+  width: 100%;
   font-size: 1.5rem;
   padding: 10px;
   background-color: white;
@@ -49,6 +54,7 @@ a:link, a:visited, a:hover {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
+  z-index: 2000;
 }
 
 .nav-left {
@@ -75,6 +81,14 @@ a:link, a:visited, a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 2000;
+}
+
+/* Sidebar */
+
+.drawerTop {
+  padding: 15px;
+  background-color: rgba(78, 197, 230, 0.20);
 }
 
 /* About */
