@@ -98,6 +98,7 @@ h1 {
 .curved-container.with-logo {
   position: relative;
   margin-top: 10vh;
+  padding-top: 10vh;
 }
 
 .curved-container .logo {
