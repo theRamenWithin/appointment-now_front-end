@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+// Connection to back-end
+import axios from 'axios'
 
 // Components
 import NavBar from './components/NavBar';
@@ -25,6 +28,34 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState('');
+
+  const loginStatus = () => {
+    axios.get('http://localhost:3000/logged_in',
+    {withCredentials: true})
+    .then(response => {
+      if (response.data.logged_in) {
+        handleLogin(response)
+      } else {
+        handleLogout()
+      }
+    })
+    .catch(error => console.log('api errors:', error))
+  }
+  
+  const handleLogin = useCallback((data) => {
+    setIsLoggedIn(!isLoggedIn);
+    setUser(data.user);
+  }, [isLoggedIn])
+
+  const handleLogout = useCallback(() => {
+    setIsLoggedIn(isLoggedIn);
+    setUser('');
+  },[isLoggedIn])
+
+  useEffect(loginStatus, [loginStatus]);
+
   return (
     <>
       <Router>
@@ -35,13 +66,28 @@ export default function App() {
             <Switch>\
               <Route exact path='/events' component={Events} />
               <Route exact path='/editprofile' component={EditProfile} />
-              <Route exact path='/editorganisation' component={EditOrganisation} />
+              <Route exact path='/editprofile' component={EditOrganisation} />
 
-              <Route exact path='/signup' component={SignUp} />
-              <Route exact path='/signin' component={SignIn} />
+              <Route 
+                exact path='/signup'
+                render={props => (
+                <SignUp {...props} handleLogin={handleLogin} loggedInStatus={isLoggedIn}/>
+                )}
+              />
+              <Route 
+                exact path='/signin'
+                render={props => (
+                <SignIn {...props} handleLogin={handleLogin} loggedInStatus={isLoggedIn}/>
+                )}
+              />
               <Route exact path='/blog' component={Blog} />
               <Route exact path='/contact' component={Contact} />
-              <Route exact path='/' component={About} />
+              <Route 
+                exact path='/' 
+                render={props => (
+                <About {...props} handleLogin={handleLogout}/>
+                )}
+              />
               <Route component={NotFound}/>
             </Switch>
           </Container>
