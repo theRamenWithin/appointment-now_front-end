@@ -7,6 +7,7 @@ import axios from 'axios'
 // Components
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
+import Sidebar from './components/Sidebar';
 
 // Page content
 import About from './components/About';
@@ -62,6 +63,7 @@ export default function App() {
         <div className="super-container">
           <CssBaseline />
           <NavBar />
+          <Sidebar />
           <Container maxWidth="lg" className="container">
             <Switch>\
               <Route exact path='/events' component={Events} />
