@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link, useHistory } from "react-router-dom";
 
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -27,8 +28,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
+  const history = useHistory();
+
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState({});
+  const [passwordConfirmation, setPasswordConfirmation] = useState({});
+  const [errors, setErrors] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    // const {username, email, password, password_confirmation} = this.state
+    let user = {
+      username: username,
+      email: password,
+      password: password,
+      passwordConfirmation: passwordConfirmation
+    }
+
+  axios.post('http://localhost:3000/login', {user}, {withCredentials: true})
+    .then(response => {
+      if (response.data.status === 'created') {
+        props.handleLogin(response.data)
+        redirect()
+      } else {
+        setErrors(response.data.errors)
+      }
+    })
+    .catch(error => console.log('api errors:', error))
+  };
+
+  const redirect = () => {
+    history.push('/')
+  }
+
+  const handleErrors = () => {
+    return (
+      <div>
+        <ul>
+          {errors.map(error => {
+            return <li key={error}>{error}</li>
+          })}
+        </ul>
+      </div>
+    )
+  }
 
   return (
     <Container component="main" maxWidth="sm" className="curved-container with-logo">
@@ -38,18 +84,38 @@ export default function SignUp() {
       </div>
       
       <div className={classes.paper}>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+
         <img src={OR} alt="OR line"/>
-        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+          <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
+                type="text"
+                label="Username"
+                name="username"
+                value={username}
+                autoComplete="username"
+                onChange={e => setUsername(e.target.value)}
+                InputProps={{
+                    style: {
+                      backgroundColor: "white"
+                    },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                type="text"
                 label="Email Address"
                 name="email"
+                value={email}
                 autoComplete="email"
+                onChange={e => setEmail(e.target.value)}
                 InputProps={{
                     style: {
                       backgroundColor: "white"
@@ -64,8 +130,9 @@ export default function SignUp() {
                 fullWidth
                 name="password"
                 label="Password"
+                value={password}
                 type="password"
-                id="password"
+                onChange={e => setPassword(e.target.value)}
                 autoComplete="current-password"
                 InputProps={{
                     style: {
@@ -79,11 +146,11 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                name="confirm-password"
+                name="passwordConfirmation"
                 label="Confirm Password"
+                value={passwordConfirmation}
                 type="password"
-                id="confirm-password"
-                autoComplete="current-password"
+                onChange={e => setPasswordConfirmation(e.target.value)}
                 InputProps={{
                     style: {
                       backgroundColor: "white"
@@ -92,6 +159,7 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
+
           <Button
             type="submit"
             fullWidth
@@ -107,6 +175,11 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </form>
+        <div>
+          {
+            errors ? handleErrors() : null
+          }
+        </div>
       </div>
     </Container>
   );
