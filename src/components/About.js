@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -16,36 +16,31 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
   textField: {
     width: '100%',
+  },
+  search: {
+    backgroundColor: "white",
   },
 }));
 
 export default function About() {
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    search: '',
-  });
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  const [search, setSearch] = useState('');
 
   return (
     <div className="about-container curved-container">
       <h1>Search for Organizations</h1>
       
       <FormControl fullWidth className={classes.margin} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+        <InputLabel htmlFor="outlined-adornment-amount">Search</InputLabel>
         <OutlinedInput
+          className={classes.search}
           id="outlined-adornment-amount"
-          value={values.search}
-          onChange={handleChange('search')}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
           startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
-          labelWidth={60}
+          labelWidth={55}
         />
       </FormControl>
 
