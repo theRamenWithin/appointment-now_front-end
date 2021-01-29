@@ -1,25 +1,35 @@
 import React from 'react';
 
+// Token Request
+import axios from 'axios';
+
+// Stlying
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
+
+// Sidebar
+import Drawer from '@material-ui/core/Drawer';
+
+// List Components
 import List from '@material-ui/core/List';
-import Toolbar from '@material-ui/core/Toolbar';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
+// Top Icons
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import HistoryIcon from '@material-ui/icons/History';
 import BusinessIcon from '@material-ui/icons/Business';
+// Bottom Icons
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import Avatar from '@material-ui/core/Avatar';
 
-const drawerWidth = 240;
+const drawerWidth = '12vw';
+const minDrawerWidth = '10vw';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
   },
   drawer: {
     width: drawerWidth,
+    minWidth: minDrawerWidth,
     flexShrink: 0,
   },
   drawerPaper: {
     width: drawerWidth,
+    minWidth: minDrawerWidth,
   },
   drawerContainer: {
     paddingTop: '3rem',
@@ -46,8 +58,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ClippedDrawer() {
+
+
+export default function ClippedDrawer(props) {
   const classes = useStyles();
+
+  const ListItemLink = (props) => {
+    return <ListItem button component="a" {...props} />;
+  }
+
+  const ListItemLinkLogout = (props) => {
+    return <ListItem button onClick={handleClick} component="a" {...props} />;
+  }
+
+  const handleClick = () => {
+    axios.delete('http://localhost:3001/logout', {withCredentials: true})
+    .then(response => {
+      props.handleLogout()
+      props.history.push('/')
+    })
+    .catch(error => console.log(error))
+  }
 
   return (
     <div className={classes.root}>
@@ -66,27 +97,37 @@ export default function ClippedDrawer() {
           </div>
           <div className="drawerBottom">
             <List>
-            <ListItem button>
-              <ListItemIcon>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Profile" />
-            </ListItem>
-              {['Profile', 'Events', 'History', 'Organisation'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <AccountCircleIcon /> : <BusinessIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
+              <ListItemLink href="profile">
+                <ListItemIcon><AccountCircleIcon /></ListItemIcon>
+                <ListItemText primary="Profile" />
+              </ListItemLink>
+
+              <ListItemLink href="events">
+                <ListItemIcon><DateRangeIcon /></ListItemIcon>
+                <ListItemText primary="Events" />
+              </ListItemLink>
+
+              <ListItemLink href="history">
+                <ListItemIcon><HistoryIcon /></ListItemIcon>
+                <ListItemText primary="History" />
+              </ListItemLink>
+
+              <ListItemLink href="editorganisation">
+                <ListItemIcon><BusinessIcon /></ListItemIcon>
+                <ListItemText primary="Organisation" />
+              </ListItemLink>
             </List>
             <Divider />
             <List>
-              {['Settings', 'Logout'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <SettingsIcon /> : <ExitToAppIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
+              <ListItemLink href="settings">
+                <ListItemIcon><SettingsIcon /></ListItemIcon>
+                <ListItemText primary="Settings" />
+              </ListItemLink>
+
+              <ListItemLinkLogout href="logout">
+                <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemLinkLogout>
             </List>
           </div>
         </div>
