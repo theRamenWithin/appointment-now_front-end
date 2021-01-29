@@ -1,31 +1,24 @@
 import React from 'react';
-import axios from 'axios';
 import { Link } from "react-router-dom";
 
 import logoSmall from '../assets/logo-small.svg';
 
 export default function NavBar(props) {
-  const handleClick = () => {
-    axios.delete('http://localhost:3001/logout', {withCredentials: true})
-    .then(response => {
-      props.handleLogout()
-      props.history.push('/')
-    })
-    .catch(error => console.log(error))
-  }
+  const isLoggedIn = true
 
   return (
     <nav className="nav">
       <div className="nav-left">
         <img src={logoSmall} alt="Logo typeface"/>
         <ul>
-          <li><Link to={'/signup'} className="nav-link">Sign Up </Link></li>
-          <li><Link to={'/signin'} className="nav-link"> Sign In</Link></li>
-          <li>
-            {
-              props.loggedInStatus ? <Link to={'/logout'} onClick={handleClick}>Log Out</Link> : null
-            }
-          </li>
+          {
+            isLoggedIn ? (
+              <div>
+                <li><Link to={'/signup'} className="nav-link">Sign Up </Link></li>
+                <li><Link to={'/signin'} className="nav-link"> Sign In</Link></li>
+              </div>
+             ) : null
+          }
         </ul>
       </div>
       
