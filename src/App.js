@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-// Connection to back-end
+// Token Request
 import axios from 'axios'
 
 // Components
@@ -21,6 +21,7 @@ import Events from './components/Events';
 import EditProfile from './components/EditProfile';
 import EditOrganisation from './components/EditOrganisation';
 
+// 404 page
 import NotFound from './components/404.js';
 
 // Styling
@@ -33,7 +34,7 @@ export default function App() {
   const [user, setUser] = useState('');
 
   const loginStatus = () => {
-    axios.get('http://localhost:3000/logged_in',
+    axios.get('http://localhost:3001/logged_in',
     {withCredentials: true})
     .then(response => {
       if (response.data.logged_in) {
@@ -63,12 +64,14 @@ export default function App() {
         <div className="super-container">
           <CssBaseline />
           <NavBar />
-          <Sidebar />
+          {
+            isLoggedIn ? <Sidebar /> : null
+          }
           <Container maxWidth="lg" className="container">
             <Switch>\
               <Route exact path='/events' component={Events} />
               <Route exact path='/editprofile' component={EditProfile} />
-              <Route exact path='/editprofile' component={EditOrganisation} />
+              <Route exact path='/editorganisation' component={EditOrganisation} />
 
               <Route 
                 exact path='/signup'
