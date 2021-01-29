@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
 
@@ -40,16 +40,15 @@ export default function SignUp(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    // const {username, email, password, password_confirmation} = this.state
     let user = {
       username: username,
-      email: password,
-      password: password,
-      passwordConfirmation: passwordConfirmation
+      email: email,
+      password: password
     }
 
-  axios.post('http://localhost:3000/login', {user}, {withCredentials: true})
+  axios.post('http://localhost:3001/signup', {user}, {withCredentials: true})
     .then(response => {
+      console.log(response.data)
       if (response.data.status === 'created') {
         props.handleLogin(response.data)
         redirect()
@@ -175,12 +174,12 @@ export default function SignUp(props) {
             </Grid>
           </Grid>
         </form>
-        <div>
+      </div>
+      <div>
           {
             errors ? handleErrors() : null
           }
         </div>
-      </div>
     </Container>
   );
 }
