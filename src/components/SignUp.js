@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
 
+// Token Request
+import axios from 'axios';
+
+// Styling
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+// Logos
 import logoLarge from '../assets/logo-large.svg';
 import OR from '../assets/OR.svg';
 
+// Custom styling that overrides Material UI defaults
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -20,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -28,10 +32,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Receive handleLogin from App.js
 export default function SignUp(props) {
   const classes = useStyles();
   const history = useHistory();
 
+  // State methods for use in the POST request later
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState({});
@@ -39,29 +45,30 @@ export default function SignUp(props) {
   const [errors, setErrors] = useState('');
 
   const handleSubmit = (event) => {
+    // Do not re-render on submit
     event.preventDefault()
+
+    // Build user for request
     let user = {
       username: username,
       email: email,
-      password: password
+      password: password,
+      password_confirmation: passwordConfirmation 
     }
 
-  axios.post('http://localhost:3001/signup', {user}, {withCredentials: true})
+    // Create a POST request to sign up
+    axios.post('http://localhost:3001/sign_up', {user}, {withCredentials: true})
     .then(response => {
       console.log(response.data)
       if (response.data.status === 'created') {
         props.handleLogin(response.data)
-        redirect()
+        history.push('/')
       } else {
         setErrors(response.data.errors)
       }
     })
     .catch(error => console.log('api errors:', error))
   };
-
-  const redirect = () => {
-    history.push('/')
-  }
 
   const handleErrors = () => {
     return (
@@ -77,12 +84,14 @@ export default function SignUp(props) {
 
   return (
     <Container component="main" maxWidth="sm" className="curved-container with-logo">
-      <CssBaseline />
+
+      {/* Logo */}
       <div className="logo">
         <img src={logoLarge} alt="Logo large"/>
       </div>
       
       <div className={classes.paper}>
+        {/* Form */}
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
 
         <img src={OR} alt="OR line"/>

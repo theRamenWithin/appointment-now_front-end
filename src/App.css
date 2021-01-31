@@ -18,6 +18,10 @@
   padding-top: 4rem
 }
 
+h1 {
+  text-align: center;
+}
+
 /* List items */
 
 ul li {
@@ -91,13 +95,7 @@ a:link, a:visited, a:hover {
   background-color: rgba(78, 197, 230, 0.20);
 }
 
-/* About */
-
-h1 {
-  text-align: center;
-}
-
-/* Edit Organisation */
+/* Reusable curved container */
 
 .curved-container {
   display: flex;

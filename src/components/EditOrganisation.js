@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// Styling
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -9,8 +10,10 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { DropzoneArea } from 'material-ui-dropzone';
 
+// Images
 import Banner from '../assets/modal-org-splash.jpg';
 
+// Custom styling that overrides Material UI defaults
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -46,7 +49,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditOrganisation() {
   const classes = useStyles();
+  // Modal state
   const [open, setOpen] = useState(false);
+  // Address states
+  // TODO Fix this. Why doesn't this work?
   const [values, setValues] = useState({
     name: '',
     description: '',
@@ -61,20 +67,22 @@ export default function EditOrganisation() {
     image: ''
   });
 
+  // Sets values
   const handleChange = (e) => {
     setValues({...values, [e.target.name]: e.target.value})
   }
 
+  // Opens the modal
   const handleOpen = () => {
     setOpen(true);
   };
 
+  // Closes the modal
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
-    
     <div className="curved-container">
       <h1>Edit Organization</h1>
 
@@ -259,8 +267,10 @@ export default function EditOrganisation() {
 
         <h1>Manage Providers</h1>
 
-
+        {/* TODO All the logic for bring up associated providers, adding and deleting them */}
       
+
+        {/* Buttons */}
         <div className="edit-org-buttons">
           <Button 
             type="submit"
@@ -288,6 +298,8 @@ export default function EditOrganisation() {
         </div>
       </form>
 
+      {/* Show Customer View Modal */}
+      {/* TODO Move this to a component? */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -303,10 +315,14 @@ export default function EditOrganisation() {
         <Fade in={open}>
           <div className={classes.paper}>
             <Grid container spacing={2} >
+              {/* Banner image */}
               <Grid item xs={12}>
                 <img src={Banner} alt="org banner" className={classes.banner}></img>
               </Grid>
+              {/* Left container */}
               <Grid item xs={4} className={classes.modaladdress}>
+              {/* Google Maps */}
+              {/* TODO Get the api working */}
               <iframe
                 title="Organisation Location"
                 width="500"
@@ -317,18 +333,23 @@ export default function EditOrganisation() {
               </iframe>
                 <ul>
                   <li>Address Line 1: {values.address1}</li>
-                  <li>Addres Line 2: </li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
+                  <li>Address Line 2: {values.address2}</li>
+                  <li>City: {values.city}</li>
+                  <li>State/Province: {values.state}</li>
+                  <li>Postcode: {values.postcode}</li>
+                  <li>Country: {values.country}</li>
+                  <li>Telephone No.: {values.telephone}</li>
+                  <li>Email Address: <a href={"mailto:" + values.email}>{values.email}</a></li>
                 </ul>
               </Grid>
+              {/* Right container */}
               <Grid item xs={8}>
-                
+                <h1>{values.name}</h1>
+                <p>{values.description}</p>
+                <strong>Providers</strong>
+                <Grid container spacing={3}>
+                 {/* Provider org cards */}
+                </Grid>
               </Grid>
             </Grid>
           </div>

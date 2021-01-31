@@ -1,7 +1,7 @@
 import React from 'react';
-
 import { Link } from "react-router-dom";
 
+// Icons
 import InstagramIcon from '@material-ui/icons/Instagram';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -14,6 +14,7 @@ export default function Footer() {
         AppointmentNow® Ltd.
       </div>
 
+      {/* TODO Fix the alignment here */}
       <div className="foot-mid">
         <ul>
           <li><Link to={'/'} className="nav-link">About </Link></li>

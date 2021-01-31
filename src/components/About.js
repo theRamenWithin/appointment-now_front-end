@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 
+// Styling
 import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 
+// Icons
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +40,7 @@ export default function About() {
           className={classes.search}
           id="outlined-adornment-amount"
           value={search}
+          // TODO Add a search method call here
           onChange={e => setSearch(e.target.value)}
           startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
           labelWidth={55}

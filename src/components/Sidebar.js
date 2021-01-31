@@ -58,8 +58,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 export default function ClippedDrawer(props) {
   const classes = useStyles();
 
@@ -93,7 +91,7 @@ export default function ClippedDrawer(props) {
         <div className={classes.drawerContainer}>
           <div className="drawerTop">
             <Avatar src="/broken-image.jpg" className={classes.large} />
-            Welcome back, User.
+            Welcome back, {props.username}.
           </div>
           <div className="drawerBottom">
             <List>

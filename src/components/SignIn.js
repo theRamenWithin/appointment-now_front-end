@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
+
+// Token Request
+import axios from 'axios';
 
 // Styling
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -16,6 +17,7 @@ import Container from '@material-ui/core/Container';
 import logoLarge from '../assets/logo-large.svg';
 import OR from '../assets/OR.svg';
 
+// Custom styling that overrides Material UI defaults
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -24,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -32,38 +34,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Receive handleLogin from App.js
 export default function SignIn(props) {
   const classes = useStyles();
   const history = useHistory();
   
+  // State methods for use in the POST request later
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState('');
 
   const handleSubmit = (event) => {
+    // Do not re-render on submit
     event.preventDefault()
+
+    // Build user for request
     let user = {
       username: username,
       email: password,
       password: password
     }
 
-  axios.post('http://localhost:3001/login', {user}, {withCredentials: true})
+    // Create a POST request to login
+    axios.post('http://localhost:3001/login', {user}, {withCredentials: true})
     .then(response => {
       if (response.data.logged_in) {
         props.handleLogin(response.data)
-        redirect()
+        history.push('/')
       } else {
         setErrors(response.data.errors)
       }
     })
     .catch(error => console.log('api errors:', error))
   };
-
-  const redirect = () => {
-    history.push('/')
-  }
 
   const handleErrors = () => {
     return (
@@ -79,7 +83,6 @@ export default function SignIn(props) {
 
   return (
     <Container component="main" maxWidth="sm" className="curved-container with-logo">
-      <CssBaseline />
 
       {/* Logo */}
       <div className="logo">
@@ -165,6 +168,7 @@ export default function SignIn(props) {
 
           <Grid container>
             <Grid item xs>
+              {/* TODO Create this component or make it a method */}
               <Link to={'/resetpassword'} variant="body2">Forgot password?</Link>
             </Grid>
             <Grid item>
