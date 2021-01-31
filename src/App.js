@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 // Token Request
@@ -26,13 +26,13 @@ import NotFound from './components/404.js';
 
 // Styling
 import './App.css';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState('');
 
+  // Axios GET request to API method to check if there is a logged in user
   const loginStatus = () => {
     axios.get('http://localhost:3001/logged_in',
     {withCredentials: true})
@@ -46,56 +46,57 @@ export default function App() {
     .catch(error => console.log('api errors:', error))
   }
   
-  const handleLogin = useCallback((data) => {
-    setIsLoggedIn(!isLoggedIn);
+  // Sets isLoggedIn to True and user to user data received from Rails
+  const handleLogin = (data) => {
+    setIsLoggedIn(true);
     setUser(data.user);
-  }, [isLoggedIn])
+  }
 
-  const handleLogout = useCallback(() => {
-    setIsLoggedIn(isLoggedIn);
+  // Sets isLoggedIn to False and clears current user data
+  const handleLogout = () => {
+    setIsLoggedIn(false);
     setUser('');
-  },[isLoggedIn])
+  }
 
-  useEffect(loginStatus, [loginStatus]);
+  // On re-render, check loginStatus
+  useEffect(loginStatus);
 
   return (
     <>
       <Router>
         <div className="super-container">
-          <CssBaseline />
+          {/* Call the Navbar at the top */}
           <NavBar />
-          {
-            isLoggedIn ? <Sidebar /> : null
+          { /* If the user is logged in, show the Sidebar */
+            isLoggedIn ? <Sidebar user={user} /> : null
           }
+          {/* Content is rendered inside this container through Route Switching  */}
           <Container maxWidth="lg" className="container">
-            <Switch>\
-              <Route exact path='/events' component={Events} />
-              <Route exact path='/editprofile' component={EditProfile} />
-              <Route exact path='/editorganisation' component={EditOrganisation} />
-
+            <Switch>
+              {/* Passing handleLogin method to SignIn and SignUp as props */}
               <Route 
                 exact path='/signup'
                 render={props => (
-                <SignUp {...props} handleLogin={handleLogin} loggedInStatus={isLoggedIn}/>
+                <SignUp {...props} handleLogin={handleLogin}/>
                 )}
               />
               <Route 
                 exact path='/signin'
                 render={props => (
-                <SignIn {...props} handleLogin={handleLogin} loggedInStatus={isLoggedIn}/>
+                <SignIn {...props} handleLogin={handleLogin}/>
                 )}
               />
+              <Route exact path='/events' component={Events} />
+              <Route exact path='/editprofile' component={EditProfile} />
+              <Route exact path='/editorganisation' component={EditOrganisation} />
               <Route exact path='/blog' component={Blog} />
               <Route exact path='/contact' component={Contact} />
-              <Route 
-                exact path='/' 
-                render={props => (
-                <About {...props} handleLogin={handleLogout}/>
-                )}
-              />
+              <Route exact path='/' component={About}/>
+              {/* URL with no matching route calls the 404 component */}
               <Route component={NotFound}/>
             </Switch>
           </Container>
+          {/* Call the Footer at the bottom */}
           <Footer />
         </div>
       </Router>
