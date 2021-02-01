@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+// Token Request
+import axios from 'axios';
+
 // Styling
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
@@ -66,10 +69,36 @@ export default function EditOrganisation() {
     email: '',
     image: ''
   });
+  const [errors, setErrors] = useState('');
 
   // Sets values
   const handleChange = (e) => {
     setValues({...values, [e.target.name]: e.target.value})
+  }
+
+  const handleSubmit = (
+    axios.post('http://localhost:3001/organisation/edit', {values}, {withCredentials: true})
+    .then(response => {
+      console.log(response.data)
+      if (response.data.status === 'saved') {
+      // TODO Success notification
+      } else {
+        setErrors(response.data.errors)
+      }
+    })
+    .catch(error => console.log('api errors:', error))
+  )
+
+  const handleErrors = () => {
+    return (
+      <div>
+        <ul>
+          {errors.map(error => {
+            return <li key={error}>{error}</li>
+          })}
+        </ul>
+      </div>
+    )
   }
 
   // Opens the modal
@@ -86,7 +115,7 @@ export default function EditOrganisation() {
     <div className="curved-container">
       <h1>Edit Organization</h1>
 
-      <form className={classes.form} noValidate>
+      <form className={classes.form} noValidate onSubmit={handleSubmit}>
         <Grid container spacing={2} justify="center">
 
           {/* Title & Description */}
@@ -355,6 +384,11 @@ export default function EditOrganisation() {
           </div>
         </Fade>
       </Modal>
+      <div>
+        {
+          errors ? handleErrors() : null
+        }
+      </div>
     </div>
   );
 }
