@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 // Token Request
 import axios from 'axios';
@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 // Receive handleLogin from App.js
 export default function SignUp(props) {
   const classes = useStyles();
-  const history = useHistory();
 
   // State methods for use in the POST request later
   const [username, setUsername] = useState('');
@@ -62,7 +61,8 @@ export default function SignUp(props) {
       console.log(response.data)
       if (response.data.status === 'created') {
         props.handleLogin(response.data)
-        history.push('/')
+        // If success, redirect to Organisation Join page
+        return <Redirect to="/join" />
       } else {
         setErrors(response.data.errors)
       }
@@ -93,9 +93,10 @@ export default function SignUp(props) {
       <div className={classes.paper}>
         {/* Form */}
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
+          <Grid container spacing={2} justify="center">
 
-        <img src={OR} alt="OR line"/>
-          <Grid container spacing={2}>
+          <img src={OR} alt="OR line"/>
+
           <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -185,10 +186,10 @@ export default function SignUp(props) {
         </form>
       </div>
       <div>
-          {
-            errors ? handleErrors() : null
-          }
-        </div>
+        {
+          errors ? handleErrors() : null
+        }
+      </div>
     </Container>
   );
 }
