@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 // Token Request
 import axios from 'axios';
@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
 // Receive handleLogin from App.js
 export default function SignIn(props) {
   const classes = useStyles();
-  const history = useHistory();
   
   // State methods for use in the POST request later
   const [username, setUsername] = useState('');
@@ -52,7 +51,7 @@ export default function SignIn(props) {
     // Build user for request
     let user = {
       username: username,
-      email: password,
+      email: email,
       password: password
     }
 
@@ -61,7 +60,7 @@ export default function SignIn(props) {
     .then(response => {
       if (response.data.logged_in) {
         props.handleLogin(response.data)
-        history.push('/')
+        return <Redirect to="/" />
       } else {
         setErrors(response.data.errors)
       }
@@ -93,7 +92,7 @@ export default function SignIn(props) {
         {/* Form */}
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
 
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justify="center">
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -112,7 +111,7 @@ export default function SignIn(props) {
             </Grid>
 
             <img src={OR} alt="OR line"/>
-
+            
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -176,6 +175,8 @@ export default function SignIn(props) {
             </Grid>
           </Grid>
         </form>
+
+        {/* Error messages */}
         <div>
           {
             errors ? handleErrors() : null
