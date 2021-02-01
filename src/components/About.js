@@ -41,7 +41,7 @@ export default function About() {
           id="outlined-adornment-amount"
           value={nameSearch}
           // TODO Add a search method call here
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => setNameSearch(e.target.value)}
           startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
           labelWidth={55}
         />
