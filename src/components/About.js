@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function About() {
   const classes = useStyles();
-  const [search, setSearch] = useState('');
+  const [nameSearch, setNameSearch] = useState('');
 
   return (
     <div className="about-container curved-container">
@@ -39,7 +39,7 @@ export default function About() {
         <OutlinedInput
           className={classes.search}
           id="outlined-adornment-amount"
-          value={search}
+          value={nameSearch}
           // TODO Add a search method call here
           onChange={e => setSearch(e.target.value)}
           startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
