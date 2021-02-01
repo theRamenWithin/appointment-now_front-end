@@ -15,6 +15,7 @@ import Contact from './components/Contact';
 import Blog from './components/Blog';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import JoinOrganisation from './components/JoinOrganisation';
 
 // Sidebar links
 import Events from './components/Events';
@@ -74,18 +75,9 @@ export default function App() {
           <Container maxWidth="lg" className="container">
             <Switch>
               {/* Passing handleLogin method to SignIn and SignUp as props */}
-              <Route 
-                exact path='/signup'
-                render={props => (
-                <SignUp {...props} handleLogin={handleLogin}/>
-                )}
-              />
-              <Route 
-                exact path='/signin'
-                render={props => (
-                <SignIn {...props} handleLogin={handleLogin}/>
-                )}
-              />
+              <Route exact path='/signup' component={SignUp} handleLogin={handleLogin}/>
+              <Route exact path='/signin' component={SignIn} handleLogin={handleLogin}/>
+              <Route exact path='/join' component={JoinOrganisation} user={user} />
               <Route exact path='/events' component={Events} />
               <Route exact path='/editprofile' component={EditProfile} />
               <Route exact path='/editorganisation' component={EditOrganisation} />
