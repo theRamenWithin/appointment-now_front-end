@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 
 // Token Request
 import axios from 'axios';
@@ -60,22 +61,42 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ClippedDrawer(props) {
   const classes = useStyles();
+  const history = useHistory();
+
+  const [errors, setErrors] = useState('');
 
   const ListItemLink = (props) => {
     return <ListItem button component="a" {...props} />;
   }
 
   const ListItemLinkLogout = (props) => {
-    return <ListItem button onClick={handleClick} component="a" {...props} />;
+    return <ListItem button onClick={handleClick} component="a" {...props}/>;
   }
 
   const handleClick = () => {
     axios.delete('http://localhost:3001/logout', {withCredentials: true})
     .then(response => {
-      props.handleLogout()
-      props.history.push('/')
+      console.log(response.data)
+      if (response.data.logged_out) {
+        props.handleLogout()
+        history.push('/')
+      } else {
+        setErrors(response.data.errors)
+      }
     })
     .catch(error => console.log(error))
+  }
+
+  const handleErrors = () => {
+    return (
+      <div>
+        <ul>
+          {errors.map(error => {
+            return <li key={error}>{error}</li>
+          })}
+        </ul>
+      </div>
+    )
   }
 
   return (
@@ -122,11 +143,16 @@ export default function ClippedDrawer(props) {
                 <ListItemText primary="Settings" />
               </ListItemLink>
 
-              <ListItemLinkLogout href="logout">
+              <ListItemLinkLogout>
                 <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                 <ListItemText primary="Logout" />
               </ListItemLinkLogout>
             </List>
+          </div>
+          <div>
+          {
+            errors ? handleErrors() : null
+          }
           </div>
         </div>
       </Drawer>
