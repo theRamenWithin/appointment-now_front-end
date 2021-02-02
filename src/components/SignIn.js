@@ -15,7 +15,7 @@ import Container from '@material-ui/core/Container';
 
 // Logos
 import logoLarge from '../assets/logo-large.svg';
-import OR from '../assets/OR.svg';
+// import OR from '../assets/OR.svg';
 
 // Custom styling that overrides Material UI defaults
 const useStyles = makeStyles((theme) => ({
