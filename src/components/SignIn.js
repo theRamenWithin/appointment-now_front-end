@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // Token Request
 import axios from 'axios';
@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 // Receive handleLogin from App.js
 export default function SignIn(props) {
   const classes = useStyles();
+  const history = useHistory();
   
   // State methods for use in the POST request later
   const [username, setUsername] = useState('');
@@ -60,7 +61,7 @@ export default function SignIn(props) {
     .then(response => {
       if (response.data.logged_in) {
         props.handleLogin(response.data)
-        return <Redirect to="/" />
+        history.push('/')
       } else {
         setErrors(response.data.errors)
       }
@@ -110,7 +111,7 @@ export default function SignIn(props) {
               />
             </Grid>
 
-            <img src={OR} alt="OR line"/>
+            {/* <img src={OR} alt="OR line"/> */}
             
             <Grid item xs={12}>
               <TextField

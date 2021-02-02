@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // Token Request
 import axios from 'axios';
@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 // Receive handleLogin from App.js
 export default function SignUp(props) {
   const classes = useStyles();
+  const history = useHistory();
 
   // State methods for use in the POST request later
   const [username, setUsername] = useState('');
@@ -62,7 +63,7 @@ export default function SignUp(props) {
       if (response.data.status === 'created') {
         props.handleLogin(response.data)
         // If success, redirect to Organisation Join page
-        return <Redirect to="/join" />
+        history.push('/join')
       } else {
         setErrors(response.data.errors)
       }
