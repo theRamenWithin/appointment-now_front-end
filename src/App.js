@@ -87,10 +87,10 @@ export default function App() {
                   <SignIn {...props} handleLogin={handleLogin}/>
                 )}
               />
-              <Route exact path='/join' component={JoinOrganisation} user={user} />
+              <Route exact path='/organisation/join' component={JoinOrganisation} user={user} />
               <Route exact path='/events' component={Events} />
               <Route exact path='/profile' component={EditProfile} />
-              <Route exact path='/editorganisation' component={EditOrganisation} />
+              <Route exact path='/organisation/edit' component={EditOrganisation} />
               <Route exact path='/blog' component={Blog} />
               <Route exact path='/contact' component={Contact} />
               <Route exact path='/' component={About}/>
