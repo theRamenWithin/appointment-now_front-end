@@ -59,7 +59,6 @@ export default function SignUp(props) {
     // Create a POST request to sign up
     axios.post('http://localhost:3001/sign_up', {user}, {withCredentials: true})
     .then(response => {
-      console.log(response.data)
       if (response.data.status === 'created') {
         props.handleLogin(response.data)
         // If success, redirect to Organisation Join page
