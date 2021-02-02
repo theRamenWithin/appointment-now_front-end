@@ -69,17 +69,27 @@ export default function App() {
           {/* Call the Navbar at the top */}
           <NavBar />
           { /* If the user is logged in, show the Sidebar */
-            isLoggedIn ? <Sidebar user={user} /> : null
+            isLoggedIn ? <Sidebar user={user} handleLogout={handleLogout} /> : null
           }
           {/* Content is rendered inside this container through Route Switching  */}
           <Container maxWidth="lg" className="container">
             <Switch>
               {/* Passing handleLogin method to SignIn and SignUp as props */}
-              <Route exact path='/signup' component={SignUp} handleLogin={handleLogin}/>
-              <Route exact path='/signin' component={SignIn} handleLogin={handleLogin}/>
+              <Route 
+                exact path='/signup'
+                render={(props) => (
+                  <SignIn {...props} handleLogin={handleLogin}/>
+                )}
+              />
+              <Route 
+                exact path='/signin'
+                render={(props) => (
+                  <SignIn {...props} handleLogin={handleLogin}/>
+                )}
+              />
               <Route exact path='/join' component={JoinOrganisation} user={user} />
               <Route exact path='/events' component={Events} />
-              <Route exact path='/editprofile' component={EditProfile} />
+              <Route exact path='/profile' component={EditProfile} />
               <Route exact path='/editorganisation' component={EditOrganisation} />
               <Route exact path='/blog' component={Blog} />
               <Route exact path='/contact' component={Contact} />
