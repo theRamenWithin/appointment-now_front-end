@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container';
 
 // Logos
 import logoLarge from '../assets/logo-large.svg';
-import OR from '../assets/OR.svg';
+// import OR from '../assets/OR.svg';
 
 // Custom styling that overrides Material UI defaults
 const useStyles = makeStyles((theme) => ({
@@ -59,10 +59,10 @@ export default function SignUp(props) {
     // Create a POST request to sign up
     axios.post('http://localhost:3001/sign_up', {user}, {withCredentials: true})
     .then(response => {
-      if (response.data.status === 'created') {
+      if (response.data.created) {
         props.handleLogin(response.data)
         // If success, redirect to Organisation Join page
-        history.push('/join')
+        history.push('/organisation/join')
       } else {
         setErrors(response.data.errors)
       }
@@ -95,7 +95,7 @@ export default function SignUp(props) {
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2} justify="center">
 
-          <img src={OR} alt="OR line"/>
+          {/* <img src={OR} alt="OR line"/> */}
 
           <Grid item xs={12}>
               <TextField
