@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 
 // Styling
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,6 +30,32 @@ const useStyles = makeStyles((theme) => ({
 export default function About() {
   const classes = useStyles();
   const [nameSearch, setNameSearch] = useState('');
+  const [nameSearchResult, setNameSearchResult] = useState('');
+  const [errors, setErrors] = useState('');
+
+  const handleSearch = (event) => {
+    event.preventDefault()
+
+    setNameSearch(event.target.value)
+
+    let organization = {
+        organization_name: nameSearch
+    }
+
+    axios.get('http://localhost:3001/organisation/search', {organization})
+    .then(reponse => {
+        console.log(organization)
+        // console.log(reponse.data)
+        if (reponse.data.organizations) {
+            setNameSearchResult(reponse.data.organizations)
+        } else if (!reponse.data.organizations) {
+            setNameSearchResult('No results found...')
+        } else {
+           setErrors(reponse.data.erorrs) 
+        }
+    })
+    .catch(error => console.log('api errors:', error))
+  };
 
   return (
     <div className="about-container curved-container">
@@ -41,11 +68,12 @@ export default function About() {
           id="outlined-adornment-amount"
           value={nameSearch}
           // TODO Add a search method call here
-          onChange={e => setNameSearch(e.target.value)}
+          onChange={handleSearch}
           startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
           labelWidth={55}
         />
       </FormControl>
+      <p>{nameSearchResult}</p>
 
       <hr/>
 
