@@ -41,6 +41,8 @@ export default function JoinOrganisation(props) {
 
     const [name, setName] = useState('');
     const [nameSearch, setNameSearch] = useState('');
+    const [nameSearchResult, setNameSearchResult] = useState('');
+    const [nameID, setNameID] = useState('');
     const [nameUnique, setNameUnique] = useState('');
     const [errors, setErrors] = useState('');
 
@@ -49,15 +51,17 @@ export default function JoinOrganisation(props) {
 
         setNameSearch(event.target.value)
 
-        let search = {
-            name: nameSearch
+        let organization = {
+            organization_name: nameSearch
         }
 
-        axios.get('http://localhost:3001/organisation/search', {search})
+        axios.get('http://localhost:3001/organisation/search', {organization})
         .then(reponse => {
             console.log(reponse.data)
-            if (reponse.data.status === 'unique') {
-                setNameUnique('true')
+            if (reponse.data.organizations) {
+                setNameSearchResult(reponse.data.organizations)
+            } else if (!reponse.data.organizations) {
+                setNameSearchResult('No results found...')
             } else {
                setErrors(reponse.data.erorrs) 
             }
@@ -71,16 +75,16 @@ export default function JoinOrganisation(props) {
 
         setName(event.target.value)
 
-        let nameCheck = {
-            name: name
+        let organization = {
+            organization_name: name
         }
 
-        axios.get('http://localhost:3001/organisation/namecheck', {nameCheck})
+        axios.get('http://localhost:3001/organisation/namecheck', {organization})
         .then(reponse => {
             console.log(reponse.data)
-            if (reponse.data.status === 'unique') {
+            if (reponse.data.unique) {
                 setNameUnique('true')
-            } else if (reponse.data.status === 'exists') {
+            } else if (!reponse.data.unique) {
                 setNameUnique('false')
             } else {
                setErrors(reponse.data.erorrs) 
@@ -92,17 +96,18 @@ export default function JoinOrganisation(props) {
     const handleCreate = (event) => {
         event.preventDefault()
 
-        let organisation = {
-            name: name,
-            user: props.user
+        let organization = {
+            organization_name: name,
+            // TODO Make sure you're getting user from somewhere here
+            user: props.user.id
         }  
         
-        axios.post('http://localhost:3001/organisation/create', {organisation})
+        axios.post('http://localhost:3001/organisation/create', {organization})
         .then(reponse => {
             console.log(reponse.data)
-            if (reponse.data.status === 'created') {
-                // Success notification
-                return <Redirect to="/" />
+            if (reponse.data.created) {
+                // TODO Some method to create a route and redirect to new unique URL?
+                return <Redirect to={"/" + reponse.data.organization_path} />
             } else {
                setErrors(reponse.data.erorrs) 
             }
@@ -113,17 +118,19 @@ export default function JoinOrganisation(props) {
     const handleJoin = (event) => {
         event.preventDefault()
 
-        let join = {
-            join: name,
-            user: props.user
+        let organization_role = {
+            // TODO Make sure to set the organization ID on submit
+            organization: nameID,
+            // TODO Make sure you're getting user from somewhere here
+            user_id: props.user.id,
+            role: 0
         }
 
-        axios.post('http://localhost:3001/organisation/join', {join})
+        axios.post('http://localhost:3001/organisation/join', {organization_role})
         .then(reponse => {
             console.log(reponse.data)
-            if (reponse.data.status === 'joined') {
-                // Success notification
-                return <Redirect to="/" />
+            if (reponse.data.join) {
+                return <Redirect to={"/" + reponse.data.organization} />
             } else {
                setErrors(reponse.data.erorrs) 
             }
@@ -173,6 +180,7 @@ export default function JoinOrganisation(props) {
                                     },
                                 }}
                             />
+                        {/* TODO for each record in nameSearchResult, list in a new window with a join button type submit */}
                         </Grid>
                     </Grid>
                 </form>
