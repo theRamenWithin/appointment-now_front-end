@@ -78,7 +78,7 @@ export default function App() {
               <Route 
                 exact path='/signup'
                 render={(props) => (
-                  <SignIn {...props} handleLogin={handleLogin}/>
+                  <SignUp {...props} handleLogin={handleLogin}/>
                 )}
               />
               <Route 
