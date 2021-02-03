@@ -39,23 +39,27 @@ export default function About() {
     const {name, value} = e.target
     setValues({...values, [name]: value})
   };
-    
+  
   useEffect(() => {
-    let organization = {
-        organization_name: values.nameSearch
-    }
-
-    axios.post('http://localhost:3001/organisation/search', {organization})
-    .then(reponse => {
-      if (reponse.data.organizations) {
-          // setValues({nameSearchResult: reponse.data.organizations})
-      } else if (!reponse.data.organizations) {
-        // setValues({nameSearchResult: 'No results found...'})
-      } else {
-        setValues({errors: reponse.data.erorrs}) 
+    if (values.nameSearch !== '') {
+      let organization = {
+          organization_name: values.nameSearch
       }
-    })
-    .catch(error => console.log('api errors:', error))
+    
+      axios.post('http://localhost:3001/organisation/search', {organization})
+      .then(reponse => {
+        if (reponse.data.organizations) {
+          console.log(organization)
+          console.log(reponse.data)
+            // setValues({nameSearchResult: reponse.data.organizations})
+        } else if (!reponse.data.organizations) {
+          // setValues(...values, nameSearchResult = 'No results found...')
+        } else {
+          // setValues(...values, errors = response.data.erorrs) 
+        }
+      })
+      .catch(error => console.log('api errors:', error))
+    }
   }, [values.nameSearch]);
 
   return (
@@ -68,8 +72,8 @@ export default function About() {
           className={classes.search}
           id="outlined-adornment-amount"
           name="nameSearch"
-          onChange={handleInputChange}
           value={values.searchName}
+          onChange={handleInputChange}
           startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
           labelWidth={55}
         />
