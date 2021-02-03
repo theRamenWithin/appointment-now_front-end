@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
 // Styling
@@ -29,33 +29,34 @@ const useStyles = makeStyles((theme) => ({
 
 export default function About() {
   const classes = useStyles();
-  const [nameSearch, setNameSearch] = useState('');
-  const [nameSearchResult, setNameSearchResult] = useState('');
-  const [errors, setErrors] = useState('');
+  const [values, setValues] = useState({
+    nameSearch: '',
+    nameSearchResult: '',
+    errors: ''
+  });
 
-  const handleSearch = (event) => {
-    event.preventDefault()
-
-    setNameSearch(event.target.value)
-
+  const handleInputChange = e => {
+    const {name, value} = e.target
+    setValues({...values, [name]: value})
+  };
+    
+  useEffect(() => {
     let organization = {
-        organization_name: nameSearch
+        organization_name: values.nameSearch
     }
 
-    axios.get('http://localhost:3001/organisation/search', {organization})
+    axios.post('http://localhost:3001/organisation/search', {organization})
     .then(reponse => {
-        console.log(organization)
-        // console.log(reponse.data)
-        if (reponse.data.organizations) {
-            setNameSearchResult(reponse.data.organizations)
-        } else if (!reponse.data.organizations) {
-            setNameSearchResult('No results found...')
-        } else {
-           setErrors(reponse.data.erorrs) 
-        }
+      if (reponse.data.organizations) {
+          // setValues({nameSearchResult: reponse.data.organizations})
+      } else if (!reponse.data.organizations) {
+        // setValues({nameSearchResult: 'No results found...'})
+      } else {
+        setValues({errors: reponse.data.erorrs}) 
+      }
     })
     .catch(error => console.log('api errors:', error))
-  };
+  }, [values.nameSearch]);
 
   return (
     <div className="about-container curved-container">
@@ -66,14 +67,14 @@ export default function About() {
         <OutlinedInput
           className={classes.search}
           id="outlined-adornment-amount"
-          value={nameSearch}
-          // TODO Add a search method call here
-          onChange={handleSearch}
+          name="nameSearch"
+          onChange={handleInputChange}
+          value={values.searchName}
           startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
           labelWidth={55}
         />
       </FormControl>
-      <p>{nameSearchResult}</p>
+      <p>{values.nameSearchResult}</p>
 
       <hr/>
 
