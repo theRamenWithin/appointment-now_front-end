@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
+import CustomPaginationActionsTable from './SearchResults';
+
 // Styling
 import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -30,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
 export default function About() {
   const classes = useStyles();
   const [values, setValues] = useState({
-    nameSearch: '',
-    nameSearchResult: '',
-    errors: ''
+    nameSearch: ''
   });
+  const [searchResult, setSearchResult] = useState('')
+  const [errors, setErrors] = useState('')
 
   const handleInputChange = e => {
     const {name, value} = e.target
@@ -47,18 +49,16 @@ export default function About() {
       }
     
       axios.post('http://localhost:3001/organisation/search', {organization})
-      .then(reponse => {
-        if (reponse.data.organizations) {
-          console.log(organization)
-          console.log(reponse.data)
-            // setValues({nameSearchResult: reponse.data.organizations})
-        } else if (!reponse.data.organizations) {
-          // setValues(...values, nameSearchResult = 'No results found...')
+      .then(response => {
+        if (response.data.organizations) {
+          setSearchResult(response.data.organizations)
         } else {
-          // setValues(...values, errors = response.data.erorrs) 
-        }
+          setErrors(response.data.erorrs) 
+      }
       })
       .catch(error => console.log('api errors:', error))
+    } else {
+      setSearchResult('')
     }
   }, [values.nameSearch]);
 
@@ -66,7 +66,7 @@ export default function About() {
     <div className="about-container curved-container">
       <h1>Search for Organizations</h1>
       
-      <FormControl fullWidth className={classes.margin} variant="outlined">
+      <FormControl className={classes.margin} variant="outlined">
         <InputLabel htmlFor="outlined-adornment-amount">Search</InputLabel>
         <OutlinedInput
           className={classes.search}
@@ -78,7 +78,10 @@ export default function About() {
           labelWidth={55}
         />
       </FormControl>
-      <p>{values.nameSearchResult}</p>
+
+      {searchResult.length > 0 ?
+      <CustomPaginationActionsTable searchResult={searchResult} parent={'about'} />
+      : null}
 
       <hr/>
 
