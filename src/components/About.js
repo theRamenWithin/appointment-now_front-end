@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
 import CustomPaginationActionsTable from './SearchResults';
+import ShowErrors from './ShowErrors';
 
 // Styling
 import { makeStyles } from '@material-ui/core/styles';
@@ -44,11 +45,11 @@ export default function About() {
   
   useEffect(() => {
     if (values.nameSearch !== '') {
-      let organization = {
+      let organizationSearch = {
           organization_name: values.nameSearch
       }
     
-      axios.post('http://localhost:3001/organisation/search', {organization})
+      axios.post('http://localhost:3001/organisation/search', {organizationSearch})
       .then(response => {
         if (response.data.organizations) {
           setSearchResult(response.data.organizations)
@@ -93,6 +94,8 @@ export default function About() {
 
         Integer ultrices dictum urna cursus vestibulum. Nunc et lacus leo. Cras pellentesque venenatis metus vitae consectetur. Nullam ac libero eget augue molestie fermentum. Cras commodo suscipit mauris, ut suscipit ante facilisis nec. Mauris vitae aliquet ipsum, quis fermentum ex. Pellentesque tempor sollicitudin rutrum. Etiam turpis leo, maximus finibus vulputate vehicula, pretium nec lorem. Vivamus commodo magna non ex efficitur lacinia. Nulla finibus a erat vel mollis. Sed lobortis posuere nibh sed aliquam. Maecenas accumsan, leo eu porta suscipit, purus purus fermentum metus, quis consequat tellus dolor maximus dolor. Maecenas mollis, felis id imperdiet rhoncus, libero purus consequat orci, quis ultrices eros neque vitae felis. Suspendisse et ultrices diam. </p>
       </div>
+
+      <ShowErrors errors={errors} />
 
     </div>
   );
