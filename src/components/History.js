@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Events() {
+export default function History() {
     return (
         <div>
-            <h1>Events Page</h1>
+            <h1>Event History Page</h1>
         </div>
     );
 }
