@@ -52,48 +52,45 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditOrganisation() {
   const classes = useStyles();
-  // Modal state
   const [open, setOpen] = useState(false);
-  // Address states
-  // TODO Fix this. Why doesn't this work?
   const [values, setValues] = useState({
-    name: '',
+    organization_name: '',
     description: '',
-    address1: '',
-    address2: '',
+    address_line_1: '',
+    address_line_2: '',
     city: '',
     state: '',
     postcode: '',
     country: '',
-    telephone: '',
+    phone: '',
     email: '',
-    image: ''
+    image: '',
+    errors: ''
   });
-  const [errors, setErrors] = useState('');
 
   // Sets values
-  const handleChange = (e) => {
-    setValues({...values, [e.target.name]: e.target.value})
-  }
+  const handleInputChange = (e) => {
+    const {name, value} = e.target
+    setValues({...values, [name]: value})
+  };
 
-  const handleSubmit = (
+  const handleSubmit = () => {
     axios.post('http://localhost:3001/organisation/edit', {values}, {withCredentials: true})
     .then(response => {
       console.log(response.data)
-      if (response.data.status === 'saved') {
-      // TODO Success notification
+      if (response.data.updated) {
       } else {
-        setErrors(response.data.errors)
+        setValues({...values, [values.errors]: response.data.errors})
       }
     })
     .catch(error => console.log('api errors:', error))
-  )
+  };
 
   const handleErrors = () => {
     return (
       <div>
         <ul>
-          {errors.map(error => {
+          {values.errors.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -125,9 +122,9 @@ export default function EditOrganisation() {
               required
               fullWidth
               label="Organisation Name"
-              name="name"
-              value={values.name}
-              onChange={handleChange}
+              name="organization_name"
+              value={values.organization_name}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -145,7 +142,7 @@ export default function EditOrganisation() {
               label="Organisation Description"
               name="description"
               value={values.description}
-              onChange={handleChange}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -162,8 +159,8 @@ export default function EditOrganisation() {
               fullWidth
               label="Address Line 1"
               name="address1"
-              value={values.address1}
-              onChange={handleChange}
+              value={values.address_line_1}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -177,8 +174,8 @@ export default function EditOrganisation() {
               fullWidth
               label="Address Line 2"
               name="address2"
-              value={values.address2}
-              onChange={handleChange}
+              value={values.address_line_2}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -194,7 +191,7 @@ export default function EditOrganisation() {
               label="City"
               name="city"
               value={values.city}
-              onChange={handleChange}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -210,7 +207,7 @@ export default function EditOrganisation() {
               label="State/Province"
               name="state"
               value={values.state}
-              onChange={handleChange}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -225,7 +222,7 @@ export default function EditOrganisation() {
               label="Postcode"
               name="postcode"
               value={values.postcode}
-              onChange={handleChange}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -241,7 +238,7 @@ export default function EditOrganisation() {
               label="Country"
               name="country"
               value={values.country}
-              onChange={handleChange}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -258,8 +255,8 @@ export default function EditOrganisation() {
               fullWidth
               label="Telephone No."
               name="telephone"
-              value={values.telephone}
-              onChange={handleChange}
+              value={values.phone}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -275,7 +272,7 @@ export default function EditOrganisation() {
               label="Email Address"
               name="email"
               value={values.email}
-              onChange={handleChange}
+              onChange={handleInputChange}
               InputProps={{
                   style: {
                     backgroundColor: "white"
@@ -289,7 +286,7 @@ export default function EditOrganisation() {
             name="image"
             acceptedFiles={['image/*']}
             dropzoneText={"Upload a banner image. Drag and drop an image here or click"}
-            onChange={handleChange}
+            onChange={handleInputChange}
           />
           </Grid>
         </Grid>
@@ -361,19 +358,19 @@ export default function EditOrganisation() {
                   &q=Sydney">
               </iframe>
                 <ul>
-                  <li>Address Line 1: {values.address1}</li>
-                  <li>Address Line 2: {values.address2}</li>
+                  <li>Address Line 1: {values.address_line_1}</li>
+                  <li>Address Line 2: {values.address_line_2}</li>
                   <li>City: {values.city}</li>
                   <li>State/Province: {values.state}</li>
                   <li>Postcode: {values.postcode}</li>
                   <li>Country: {values.country}</li>
-                  <li>Telephone No.: {values.telephone}</li>
+                  <li>Telephone No.: {values.phone}</li>
                   <li>Email Address: <a href={"mailto:" + values.email}>{values.email}</a></li>
                 </ul>
               </Grid>
               {/* Right container */}
               <Grid item xs={8}>
-                <h1>{values.name}</h1>
+                <h1>{values.organization_name}</h1>
                 <p>{values.description}</p>
                 <strong>Providers</strong>
                 <Grid container spacing={3}>
@@ -386,7 +383,7 @@ export default function EditOrganisation() {
       </Modal>
       <div>
         {
-          errors ? handleErrors() : null
+          values.errors ? handleErrors() : null
         }
       </div>
     </div>
