@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from "react-router-dom";
 
 // Token Request
 import axios from 'axios';
+
+import CustomPaginationActionsTable from './SearchResults';
 
 // Styling
 import Button from '@material-ui/core/Button';
@@ -39,116 +41,114 @@ const useStyles = makeStyles((theme) => ({
 export default function JoinOrganisation(props) {
     const classes = useStyles();
 
-    const [name, setName] = useState('');
-    const [nameSearch, setNameSearch] = useState('');
-    const [nameSearchResult, setNameSearchResult] = useState('');
-    const [nameID, setNameID] = useState('');
-    const [nameUnique, setNameUnique] = useState('');
-    const [errors, setErrors] = useState('');
+    const [values, setValues] = useState({
+        nameSearch: '',
+        nameCheck: ''
+    });
+    const [nameUnique, setNameUnique] = useState('')
+    const [searchResult, setSearchResult] = useState('')
 
-    const handleSearch = (event) => {
-        event.preventDefault()
+    const [errors, setErrors] = useState('')
 
-        setNameSearch(event.target.value)
-
-        let organization = {
-            organization_name: nameSearch
-        }
-
-        axios.get('http://localhost:3001/organisation/search', {organization})
-        .then(reponse => {
-            console.log(reponse.data)
-            if (reponse.data.organizations) {
-                setNameSearchResult(reponse.data.organizations)
-            } else if (!reponse.data.organizations) {
-                setNameSearchResult('No results found...')
-            } else {
-               setErrors(reponse.data.erorrs) 
-            }
-        })
-        .catch(error => console.log('api errors:', error))
+    const handleInputChange = e => {
+        const {name, value} = e.target
+        setValues({...values, [name]: value})
     };
-
-    // Checks name uniqueness for Organisation creation
-    const handleNameCheck = (event) => {
-        event.preventDefault()
-
-        setName(event.target.value)
-
-        let organization = {
-            organization_name: name
-        }
-
-        axios.get('http://localhost:3001/organisation/namecheck', {organization})
-        .then(reponse => {
-            console.log(reponse.data)
-            if (reponse.data.unique) {
-                setNameUnique('true')
-            } else if (!reponse.data.unique) {
-                setNameUnique('false')
-            } else {
-               setErrors(reponse.data.erorrs) 
+    
+    // Search for organisations
+    useEffect(() => {
+        if (values.nameSearch !== '') {
+            let organizationSearch = {
+                organization_name: values.nameSearch
             }
-        })
-        .catch(error => console.log('api errors:', error))
-    };
+        
+            axios.post('http://localhost:3001/organisation/search', {organizationSearch})
+            .then(response => {
+                if (response.data.organizations) {
+                    setSearchResult(response.data.organizations)
+                } else {
+                    setErrors(response.data.erorrs) 
+                }
+            })
+            .catch(error => console.log('api errors:', error))
+        } else {
+            setSearchResult('')
+        }
+    }, [values.nameSearch]);
 
-    const handleCreate = (event) => {
-        event.preventDefault()
+    // Checks for name uniqueness
+    useEffect(() => {
+        if (values.nameCheck !== '') {
+            let organizationUnique = {
+                organization_name: values.nameCheck
+            }
+        
+            axios.post('http://localhost:3001/organisation/namecheck', {organizationUnique})
+            .then(response => {
+                if (response.data.unique) {
+                    setNameUnique(response.data.unique)
+                } else if (!response.data.unique) {
+                    setNameUnique(response.data.unique)
+                } else {
+                    setErrors(response.data.erorrs) 
+                }
+            })
+            .catch(error => console.log('api errors:', error))
+        } else {
+            setNameUnique('')
+        }
+    }, [values.nameCheck]);
 
-        let organization = {
-            organization_name: name,
-            // TODO Make sure you're getting user from somewhere here
+    const handleCreate = (e) => {
+        e.preventDefault()
+
+        let organizationCreate = {
+            organization_name: values.name,
             user: props.user.id
         }  
         
-        axios.post('http://localhost:3001/organisation/create', {organization})
-        .then(reponse => {
-            console.log(reponse.data)
-            if (reponse.data.created) {
-                // TODO Some method to create a route and redirect to new unique URL?
-                return <Redirect to={"/" + reponse.data.organization_path} />
+        axios.post('http://localhost:3001/organisation/create', {organizationCreate})
+        .then(response => {
+            console.log(response.data)
+            if (response.data.created) {
+                return <Redirect to={"/" + response.data.organization_path} />
             } else {
-               setErrors(reponse.data.erorrs) 
+               setErrors(response.data.erorrs) 
             }
         })
         .catch(error => console.log('api errors:', error))
     };
 
-    const handleJoin = (event) => {
-        event.preventDefault()
-
+    const handleJoin = (nameID) => {
         let organization_role = {
-            // TODO Make sure to set the organization ID on submit
-            organization: nameID,
-            // TODO Make sure you're getting user from somewhere here
+            organization_id: nameID,
             user_id: props.user.id,
             role: 0
         }
 
         axios.post('http://localhost:3001/organisation/join', {organization_role})
-        .then(reponse => {
-            console.log(reponse.data)
-            if (reponse.data.join) {
-                return <Redirect to={"/" + reponse.data.organization} />
+        .then(response => {
+            console.log(response.data)
+            if (response.data.join) {
+                return <Redirect to={"/" + response.data.organization} />
             } else {
-               setErrors(reponse.data.erorrs) 
+               setErrors(response.data.erorrs) 
             }
         })
         .catch(error => console.log('api errors:', error))
     };
 
-    const handleErrors = () => {
-        return (
-          <div>
-            <ul>
-              {errors.map(error => {
-                return <li key={error}>{error}</li>
-              })}
-            </ul>
-          </div>
-        )
-      }
+    // const handleErrors = () => {
+    //     return (
+    //       <div>
+    //         <ul>
+    //           {errors.map(error => {
+    //             return <li key={error}>{error}</li>
+    //           })}
+    //         </ul>
+    //       </div>
+    //     )
+    //   }
 
     return (
         <Container component="main" maxWidth="sm" className="curved-container with-logo">
@@ -163,24 +163,28 @@ export default function JoinOrganisation(props) {
             </div>
 
             <div className={classes.paper}>
-                <form className={classes.form} noValidate onSubmit={handleJoin}>
+                <form className={classes.form} noValidate>
                 <h2>Join an Organisation</h2>
                     <Grid container spacing={2} justify="center">
                         <Grid item xs={12}>
                         <TextField
-                                variant="outlined"
-                                fullWidth
-                                label="Search"
-                                name="name"
-                                value={name}
-                                onChange={handleSearch}
-                                InputProps={{
-                                    style: {
-                                    backgroundColor: "white"
-                                    },
-                                }}
-                            />
-                        {/* TODO for each record in nameSearchResult, list in a new window with a join button type submit */}
+                            variant="outlined"
+                            fullWidth
+                            label="Search"
+                            name="nameSearch"
+                            value={values.nameSearch}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                style: {
+                                backgroundColor: "white"
+                                },
+                            }}
+                        />
+                        {
+                            searchResult.length > 0 ?
+                            <CustomPaginationActionsTable searchResult={searchResult} handleJoin={handleJoin} parent={'join'} />
+                            : null
+                        }
                         </Grid>
                     </Grid>
                 </form>
@@ -197,9 +201,9 @@ export default function JoinOrganisation(props) {
                                 variant="outlined"
                                 fullWidth
                                 label="Organisation Name"
-                                name="name"
-                                value={name}
-                                onChange={handleNameCheck}
+                                name="nameCheck"
+                                value={values.nameCheck}
+                                onChange={handleInputChange}
                                 InputProps={{
                                     style: {
                                     backgroundColor: "white"
@@ -227,13 +231,6 @@ export default function JoinOrganisation(props) {
                         </Grid>
                     </Grid>
                 </form>
-
-                {/* Error messages */}
-                <div>
-                {
-                    errors ? handleErrors() : null
-                }
-                </div>
             </div>
 
         </Container>
