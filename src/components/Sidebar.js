@@ -112,7 +112,7 @@ export default function ClippedDrawer(props) {
         <div className={classes.drawerContainer}>
           <div className="drawerTop">
             <Avatar src="/broken-image.jpg" className={classes.large} />
-            Welcome back, {props.username}.
+            Welcome back, {props.user}.
           </div>
           <div className="drawerBottom">
             <List>
@@ -131,7 +131,7 @@ export default function ClippedDrawer(props) {
                 <ListItemText primary="History" />
               </ListItemLink>
 
-              <ListItemLink href="editorganisation">
+              <ListItemLink href="organisation/edit">
                 <ListItemIcon><BusinessIcon /></ListItemIcon>
                 <ListItemText primary="Organisation" />
               </ListItemLink>
