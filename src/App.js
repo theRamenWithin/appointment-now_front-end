@@ -15,12 +15,15 @@ import Contact from './components/Contact';
 import Blog from './components/Blog';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import Organisation from './components/JoinOrganisation';
 import JoinOrganisation from './components/JoinOrganisation';
 
 // Sidebar links
 import Events from './components/Events';
+import EventHistory from './components/History';
 import EditProfile from './components/EditProfile';
 import EditOrganisation from './components/EditOrganisation';
+import Settings from './components/Settings';
 
 // 404 page
 import NotFound from './components/404.js';
@@ -32,25 +35,32 @@ import Container from '@material-ui/core/Container';
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState('');
+  const [routes, setRoutes] = useState([]);
+
+  // Axios request for getting organizational routes
+  useEffect(() => {
+    axios.get('http://localhost:3001/org_routes')
+    .then(response => { setRoutes(response.data.organizations_routes) })
+    .catch(error => console.log('api errors:', error))
+  },[])
 
   // Axios GET request to API method to check if there is a logged in user
   const loginStatus = () => {
-    axios.get('http://localhost:3001/logged_in',
-    {withCredentials: true})
+    axios.get('http://localhost:3001/logged_in', {withCredentials: true})
     .then(response => {
       if (response.data.logged_in) {
-        handleLogin(response)
+        handleLogin(response.data.user)
       } else {
         handleLogout()
       }
     })
     .catch(error => console.log('api errors:', error))
   }
-  
+
   // Sets isLoggedIn to True and user to user data received from Rails
   const handleLogin = (data) => {
     setIsLoggedIn(true);
-    setUser(data.user);
+    setUser(data.username);
   }
 
   // Sets isLoggedIn to False and clears current user data
@@ -68,7 +78,8 @@ export default function App() {
         <div className="super-container">
           {/* Call the Navbar at the top */}
           <NavBar />
-          { /* If the user is logged in, show the Sidebar */
+          {/* If the user is logged in, show the Sidebar */}
+          {
             isLoggedIn ? <Sidebar user={user} handleLogout={handleLogout} /> : null
           }
           {/* Content is rendered inside this container through Route Switching  */}
@@ -95,10 +106,24 @@ export default function App() {
               />
               <Route exact path='/events' component={Events} />
               <Route exact path='/profile' component={EditProfile} />
+              <Route exact path='/history' component={EventHistory} />
+              <Route exact path='/settings' component={Settings} />
               <Route exact path='/organisation/edit' component={EditOrganisation} />
               <Route exact path='/blog' component={Blog} />
               <Route exact path='/contact' component={Contact} />
               <Route exact path='/' component={About}/>
+
+              {/* Organisation routes */}
+              {routes.map(route => {
+                return <Route
+                  key={route} 
+                  exact path={'/' + {route}} 
+                  render={(props) => ( 
+                    <Organisation {...props} route={route} />
+                  )}
+                />
+              })}
+
               {/* URL with no matching route calls the 404 component */}
               <Route component={NotFound}/>
             </Switch>
