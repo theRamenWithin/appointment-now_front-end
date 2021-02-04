@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import axios from 'axios';
 
 import CustomPaginationActionsTable from './SearchResults';
+import ShowErrors from './ShowErrors';
 
 // Styling
 import Button from '@material-ui/core/Button';
@@ -232,6 +233,8 @@ export default function JoinOrganisation(props) {
                     </Grid>
                 </form>
             </div>
+            
+            <ShowErrors errors={errors} />
 
         </Container>
     );
