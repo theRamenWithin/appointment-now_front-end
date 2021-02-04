@@ -149,7 +149,7 @@ export default function CustomPaginationActionsTable(props) {
               props.parent === 'join' ?   
                 <><TableCell style={{ width: 160 }} align="right">
                   <div className={classes.root}>
-                    <Button variant="contained" color="primary" onClick={props.handleJoin(row.id)}>
+                    <Button variant="contained" color="primary" onClick={() => {props.handleJoin(row.id);}}>
                       Join
                     </Button>
                   </div>
