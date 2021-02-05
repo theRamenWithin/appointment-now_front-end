@@ -4,6 +4,9 @@ import { Link, useHistory } from "react-router-dom";
 // Token Request
 import axios from 'axios';
 
+// Components
+import ShowErrors from './ShowErrors';
+
 // Styling
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -69,18 +72,6 @@ export default function SignUp(props) {
     })
     .catch(error => console.log('api errors:', error))
   };
-
-  const handleErrors = () => {
-    return (
-      <div>
-        <ul>
-          {errors.map(error => {
-            return <li key={error}>{error}</li>
-          })}
-        </ul>
-      </div>
-    )
-  }
 
   return (
     <Container component="main" maxWidth="sm" className="curved-container with-logo">
@@ -185,11 +176,7 @@ export default function SignUp(props) {
           </Grid>
         </form>
       </div>
-      <div>
-        {
-          errors ? handleErrors() : null
-        }
-      </div>
+      <ShowErrors errors={errors} />
     </Container>
   );
 }

@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 // Token Request
 import axios from 'axios';
 
+// Components
 import CustomPaginationActionsTable from './SearchResults';
 import ShowErrors from './ShowErrors';
 
@@ -103,12 +104,12 @@ export default function JoinOrganisation(props) {
     const handleCreate = (e) => {
         e.preventDefault()
 
-        let organizationCreate = {
-            organization_name: values.name,
+        let organization = {
+            organization_name: values.nameCheck,
             user: props.user.id
         }  
         
-        axios.post('http://localhost:3001/organisation/create', {organizationCreate})
+        axios.post('http://localhost:3001/organisation/create', {organization})
         .then(response => {
             console.log(response.data)
             if (response.data.created) {
@@ -139,17 +140,7 @@ export default function JoinOrganisation(props) {
         .catch(error => console.log('api errors:', error))
     };
 
-    // const handleErrors = () => {
-    //     return (
-    //       <div>
-    //         <ul>
-    //           {errors.map(error => {
-    //             return <li key={error}>{error}</li>
-    //           })}
-    //         </ul>
-    //       </div>
-    //     )
-    //   }
+
 
     return (
         <Container component="main" maxWidth="sm" className="curved-container with-logo">
@@ -213,7 +204,7 @@ export default function JoinOrganisation(props) {
                             />
                             {nameUnique !== ''
                                 ? nameUnique === true
-                                    ? <><img src={CheckCircleOutlineIcon} alt="Tick Icon" /> Name Available</>
+                                    ? <><CheckCircleOutlineIcon /> Name Available</>
                                     : <><img src={HighlightOffIcon} alt="Tick Icon" /> Name Unavailable</>
                                 : null
                             }                  

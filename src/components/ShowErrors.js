@@ -1,15 +1,19 @@
-import React from 'react'
+import React from 'react';
+import Alert from '@material-ui/lab/Alert';
 
-export default function ShowErorrs(props) {
+export default function ShowErrors(props) {
 
-    // TODO Fix this nonsense
+    // No idea why this doesn't work. It did work but then it stopped.
     return (
-        <div>
-            <ul>
-            {/* {props.errors.map(error => {
-                return <li key={error}>{error}</li>
-            })} */}
-            </ul>
-        </div>
+        props.errors ?
+            props.errors.map(error => {
+            return <div> 
+                <Alert key={error} variant="filled" severity="error">
+                    {error}
+                </Alert>
+                <br></br>
+            </div>
+            })
+        : null
     );
 }

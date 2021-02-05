@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 // Token Request
 import axios from 'axios';
 
+// Components
+import ShowErrors from './ShowErrors';
+
 // Styling
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
@@ -33,8 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
   banner: {
     width: '100%',
-    maxHeight: '150px',
+    maxHeight: '250px',
     overflow: 'hidden',
+    padding: '0',
     borderRadius: '12px 12px 0 0',
   },
   modaladdress: {
@@ -65,6 +69,7 @@ export default function EditOrganisation() {
     phone: '',
     email: '',
     image: '',
+    providers: '',
     errors: ''
   });
 
@@ -77,26 +82,14 @@ export default function EditOrganisation() {
   const handleSubmit = () => {
     axios.post('http://localhost:3001/organisation/edit', {values}, {withCredentials: true})
     .then(response => {
-      console.log(response.data)
       if (response.data.updated) {
+
       } else {
         setValues({...values, [values.errors]: response.data.errors})
       }
     })
     .catch(error => console.log('api errors:', error))
   };
-
-  const handleErrors = () => {
-    return (
-      <div>
-        <ul>
-          {values.errors.map(error => {
-            return <li key={error}>{error}</li>
-          })}
-        </ul>
-      </div>
-    )
-  }
 
   // Opens the modal
   const handleOpen = () => {
@@ -199,7 +192,7 @@ export default function EditOrganisation() {
               }}
             />
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={5}>
             <TextField
               variant="outlined"
               required
@@ -282,46 +275,45 @@ export default function EditOrganisation() {
           </Grid>
           {/* Banner Image */}
           <Grid item xs={10}>
-          <DropzoneArea
+          {/* <DropzoneArea
             name="image"
             acceptedFiles={['image/*']}
             dropzoneText={"Upload a banner image. Drag and drop an image here or click"}
             onChange={handleInputChange}
-          />
+          /> */}
+          </Grid>
+
+          <h1>Manage Providers</h1>
+
+          {/* TODO All the logic for bring up associated providers, adding and deleting them */}
+        
+          {/* Buttons */}
+          <Grid item xs={10}>
+            <Button 
+              type="submit"
+              label="Save"
+              variant="contained"
+              onClick={classes.submit}
+            >
+              Save
+            </Button>
+            <Button 
+              type="reset"
+              label="Reset"
+              variant="contained"
+              onClick={classes.reset}
+            >
+              Reset
+            </Button>
+            <Button 
+              type="button" 
+              variant="contained"
+              onClick={handleOpen}
+            >
+              Show Customer View
+            </Button>
           </Grid>
         </Grid>
-
-        <h1>Manage Providers</h1>
-
-        {/* TODO All the logic for bring up associated providers, adding and deleting them */}
-      
-
-        {/* Buttons */}
-        <div className="edit-org-buttons">
-          <Button 
-            type="submit"
-            label="Save"
-            variant="contained"
-            onClick={classes.submit}
-          >
-            Save
-          </Button>
-          <Button 
-            type="reset"
-            label="Reset"
-            variant="contained"
-            onClick={classes.reset}
-          >
-            Reset
-          </Button>
-          <Button 
-            type="button" 
-            variant="contained"
-            onClick={handleOpen}
-          >
-            Show Customer View
-          </Button>
-        </div>
       </form>
 
       {/* Show Customer View Modal */}
@@ -340,24 +332,24 @@ export default function EditOrganisation() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <Grid container spacing={2} >
+            <Grid spacing={2} >
               {/* Banner image */}
-              <Grid item xs={12}>
+              <Grid xs={12}>
                 <img src={Banner} alt="org banner" className={classes.banner}></img>
               </Grid>
               {/* Left container */}
               <Grid item xs={4} className={classes.modaladdress}>
-              {/* Google Maps */}
-              {/* TODO Get the api working */}
-              <iframe
-                title="Organisation Location"
-                width="500"
-                height="500"
-                frameborder="0"
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDsw_-i9Nf1d77G0BBtsNT6TIbPk2tHEZQ
-                  &q=Sydney">
-              </iframe>
-                <ul>
+                {/* Google Maps */}
+                {/* TODO Get the api working */}
+                <iframe
+                  title="Organisation Location"
+                  width="100%"
+                  height="100%"
+                  frameborder="0"
+                  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDsw_-i9Nf1d77G0BBtsNT6TIbPk2tHEZQ
+                    &q={values.address_line_1}">
+                </iframe>
+                <ul className="org-modal">
                   <li>Address Line 1: {values.address_line_1}</li>
                   <li>Address Line 2: {values.address_line_2}</li>
                   <li>City: {values.city}</li>
@@ -381,11 +373,7 @@ export default function EditOrganisation() {
           </div>
         </Fade>
       </Modal>
-      <div>
-        {
-          values.errors ? handleErrors() : null
-        }
-      </div>
+      <ShowErrors errors={values.errors} />
     </div>
   );
 }
