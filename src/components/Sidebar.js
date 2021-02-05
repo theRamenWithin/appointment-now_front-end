@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 
 // Token Request
 import axios from 'axios';
+
+// Components
+import ShowErrors from './ShowErrors';
 
 // Stlying
 import { makeStyles } from '@material-ui/core/styles';
@@ -87,18 +90,6 @@ export default function ClippedDrawer(props) {
     .catch(error => console.log(error))
   }
 
-  const handleErrors = () => {
-    return (
-      <div>
-        <ul>
-          {errors.map(error => {
-            return <li key={error}>{error}</li>
-          })}
-        </ul>
-      </div>
-    )
-  }
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -116,29 +107,29 @@ export default function ClippedDrawer(props) {
           </div>
           <div className="drawerBottom">
             <List>
-              <ListItemLink href="profile">
+              <ListItemLink component={RouterLink} to="/profile">
                 <ListItemIcon><AccountCircleIcon /></ListItemIcon>
                 <ListItemText primary="Profile" />
               </ListItemLink>
 
-              <ListItemLink href="events">
+              <ListItemLink component={RouterLink} to="/events">
                 <ListItemIcon><DateRangeIcon /></ListItemIcon>
                 <ListItemText primary="Events" />
               </ListItemLink>
 
-              <ListItemLink href="history">
+              <ListItemLink component={RouterLink} to="/history">
                 <ListItemIcon><HistoryIcon /></ListItemIcon>
                 <ListItemText primary="History" />
               </ListItemLink>
 
-              <ListItemLink href="organisation/edit">
+              <ListItemLink component={RouterLink} to="/organisation/edit">
                 <ListItemIcon><BusinessIcon /></ListItemIcon>
                 <ListItemText primary="Organisation" />
               </ListItemLink>
             </List>
             <Divider />
             <List>
-              <ListItemLink href="settings">
+              <ListItemLink component={RouterLink} to="/settings">
                 <ListItemIcon><SettingsIcon /></ListItemIcon>
                 <ListItemText primary="Settings" />
               </ListItemLink>
@@ -149,11 +140,7 @@ export default function ClippedDrawer(props) {
               </ListItemLinkLogout>
             </List>
           </div>
-          <div>
-          {
-            errors ? handleErrors() : null
-          }
-          </div>
+          <ShowErrors errors={errors} />
         </div>
       </Drawer>
     </div>
