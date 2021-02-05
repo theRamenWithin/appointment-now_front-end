@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 // Token Request
 import axios from 'axios';
 
+// Components
 import ShowErrors from './ShowErrors';
 
 // Styling
@@ -70,8 +71,6 @@ export default function SignIn(props) {
     })
     .catch(error => console.log('api errors:', error))
   };
-
-
 
   return (
     <Container component="main" maxWidth="sm" className="curved-container with-logo">
