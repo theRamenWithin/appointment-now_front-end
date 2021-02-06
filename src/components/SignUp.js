@@ -99,6 +99,7 @@ export default function SignUp(props) {
 
           <Grid item xs={12}>
               <TextField
+                id="username"
                 variant="outlined"
                 required
                 fullWidth
@@ -117,6 +118,7 @@ export default function SignUp(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                id="email"
                 variant="outlined"
                 fullWidth
                 type="text"
@@ -134,6 +136,7 @@ export default function SignUp(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                id="password"
                 variant="outlined"
                 required
                 fullWidth
@@ -152,6 +155,7 @@ export default function SignUp(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                id="confpassword"
                 variant="outlined"
                 required
                 fullWidth
@@ -170,6 +174,7 @@ export default function SignUp(props) {
           </Grid>
 
           <Button
+            id="submit"
             type="submit"
             fullWidth
             variant="contained"

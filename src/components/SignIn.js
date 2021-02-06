@@ -96,6 +96,7 @@ export default function SignIn(props) {
           <Grid container spacing={2} justify="center">
             <Grid item xs={12}>
               <TextField
+                id="username"
                 variant="outlined"
                 fullWidth
                 label="Username"
@@ -115,6 +116,7 @@ export default function SignIn(props) {
             
             <Grid item xs={12}>
               <TextField
+                id="email"
                 variant="outlined"
                 fullWidth
                 label="Email Address"
@@ -131,6 +133,7 @@ export default function SignIn(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                id="password"
                 variant="outlined"
                 required
                 fullWidth
@@ -157,6 +160,7 @@ export default function SignIn(props) {
           </Grid>
 
           <Button
+            id="submit"
             type="submit"
             fullWidth
             variant="contained"
