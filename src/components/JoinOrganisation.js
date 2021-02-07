@@ -202,12 +202,14 @@ export default function JoinOrganisation(props) {
                                     },
                                 }}
                             />
+                        </Grid>
+                        <Grid container xs={11} justify="flex-start" alignItems="center">
                             {nameUnique !== ''
                                 ? nameUnique === true
                                     ? <><CheckCircleOutlineIcon /> Name Available</>
-                                    : <><img src={HighlightOffIcon} alt="Tick Icon" /> Name Unavailable</>
+                                    : <><HighlightOffIcon /> Name Unavailable</>
                                 : null
-                            }                  
+                            } 
                         </Grid>
 
                         <Grid item xs={12}>
