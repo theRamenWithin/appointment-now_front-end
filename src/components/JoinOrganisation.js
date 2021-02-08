@@ -101,6 +101,7 @@ export default function JoinOrganisation(props) {
         }
     }, [values.nameCheck]);
 
+    // Create new organisation
     const handleCreate = (e) => {
         e.preventDefault()
 
@@ -121,6 +122,7 @@ export default function JoinOrganisation(props) {
         .catch(error => console.log('api errors:', error))
     };
 
+    // Join existing organisation
     const handleJoin = (org_name, org_id) => {
         let organization_role = {
             organization_id: org_id,
@@ -140,8 +142,6 @@ export default function JoinOrganisation(props) {
         .catch(error => console.log('api errors:', error))
     };
 
-
-
     return (
         <Container component="main" maxWidth="sm" className="curved-container with-logo">
 
@@ -154,6 +154,7 @@ export default function JoinOrganisation(props) {
                 <img src={logoLarge} alt="Logo large"/>
             </div>
 
+            {/* Join form */}
             <div className={classes.paper}>
                 <form className={classes.form} noValidate>
                 <h2>Join an Organisation</h2>

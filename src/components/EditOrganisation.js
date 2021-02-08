@@ -79,6 +79,7 @@ export default function EditOrganisation() {
     setValues({...values, [name]: value})
   };
 
+  // Updates the organisation record in the back-end on submit
   const handleSubmit = () => {
     axios.post(process.env.REACT_APP_DOMAIN + '/organisation/edit', {values}, {withCredentials: true})
     .then(response => {
@@ -275,6 +276,7 @@ export default function EditOrganisation() {
           </Grid>
           {/* Banner Image */}
           <Grid item xs={10}>
+          {/* TODO Need to figure out the correct onChange method for image files */}
           {/* <DropzoneArea
             name="image"
             acceptedFiles={['image/*']}
@@ -340,7 +342,6 @@ export default function EditOrganisation() {
               {/* Left container */}
               <Grid item xs={4} className={classes.modaladdress}>
                 {/* Google Maps */}
-                {/* TODO Get the api working */}
                 <iframe
                   title="Organisation Location"
                   width="100%"

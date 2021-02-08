@@ -45,6 +45,7 @@ export default function App() {
     .catch(error => console.log('api errors:', error))
   },[])
 
+  // Makes a map of routes received from back-end
   const routesComponents = routes.map(route => {
     return <Route
       key={route} 

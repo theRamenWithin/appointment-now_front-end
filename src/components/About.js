@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
+
+// Token Request
 import axios from 'axios';
 
+// Components
 import CustomPaginationActionsTable from './SearchResults';
 import ShowErrors from './ShowErrors';
 
@@ -43,6 +46,7 @@ export default function About() {
     setValues({...values, [name]: value})
   };
   
+  // When the search value is updated by typing in the search bar, request LIKE organisations
   useEffect(() => {
     if (values.nameSearch !== '') {
       let organizationSearch = {
@@ -67,6 +71,7 @@ export default function About() {
     <div className="about-container curved-container">
       <h1>Search for Organizations</h1>
       
+      {/* Search form */}
       <FormControl className={classes.margin} variant="outlined">
         <InputLabel htmlFor="outlined-adornment-amount">Search</InputLabel>
         <OutlinedInput
@@ -80,6 +85,7 @@ export default function About() {
         />
       </FormControl>
 
+      {/* Show search result container if there are results to show */}
       {searchResult.length > 0 ?
       <CustomPaginationActionsTable searchResult={searchResult} parent={'about'} />
       : null}

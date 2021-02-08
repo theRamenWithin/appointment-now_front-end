@@ -76,6 +76,7 @@ export default function ClippedDrawer(props) {
     return <ListItem button onClick={handleClick} component="a" {...props}/>;
   }
 
+  // Handles the logout process
   const handleClick = () => {
     axios.delete(process.env.REACT_APP_DOMAIN + '/logout', {withCredentials: true})
     .then(response => {
@@ -106,6 +107,7 @@ export default function ClippedDrawer(props) {
             Welcome back, {props.user}.
           </div>
           <div className="drawerBottom">
+            {/* Links */}
             <List>
               <ListItemLink component={RouterLink} to="/profile">
                 <ListItemIcon><AccountCircleIcon /></ListItemIcon>

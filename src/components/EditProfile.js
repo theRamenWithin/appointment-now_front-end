@@ -90,6 +90,7 @@ export default function EditProfile() {
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
                 <Grid container spacing={2} justify="center">
 
+                    {/* Personal info */}
                     <Grid item xs={5}>
                         <TextField
                         variant="outlined"
@@ -122,6 +123,8 @@ export default function EditProfile() {
                         }}
                         />
                     </Grid>
+
+                    {/* Contact */}
                     <Grid item xs={10}>
                         <TextField
                         variant="outlined"
@@ -153,6 +156,8 @@ export default function EditProfile() {
                         }}
                         />
                     </Grid>
+
+                    {/* Address */}
                     <Grid item xs={10}>
                         <TextField
                         variant="outlined"
