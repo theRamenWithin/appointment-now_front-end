@@ -15,7 +15,7 @@ import Contact from './components/Contact';
 import Blog from './components/Blog';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import Organisation from './components/JoinOrganisation';
+import Organisation from './components/Organisation';
 import JoinOrganisation from './components/JoinOrganisation';
 
 // Sidebar links
@@ -35,14 +35,25 @@ import Container from '@material-ui/core/Container';
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState('');
+  const [userID, setUserID] = useState('');
   const [routes, setRoutes] = useState([]);
 
   // Axios request for getting organizational routes
   useEffect(() => {
-    axios.get('http://localhost:3001/org_routes')
+    axios.get('http://localhost:3001/organisation/org_routes')
     .then(response => { setRoutes(response.data.organizations_routes) })
     .catch(error => console.log('api errors:', error))
   },[])
+
+  const routesComponents = routes.map(route => {
+    return <Route
+      key={route} 
+      exact path={'/' + route} 
+      render={(props) => ( 
+        <Organisation {...props} route={route} />
+      )}
+    />
+  })
 
   // Axios GET request to API method to check if there is a logged in user
   const loginStatus = () => {
@@ -60,6 +71,7 @@ export default function App() {
   // Sets isLoggedIn to True and user to user data received from Rails
   const handleLogin = (data) => {
     setIsLoggedIn(true);
+    setUserID(data.id);
     setUser(data.username);
   }
 
@@ -101,7 +113,7 @@ export default function App() {
               <Route 
                 exact path='/organisation/join' 
                 render={(props) => (
-                  <JoinOrganisation {...props} user={user}/>
+                  <JoinOrganisation {...props} userID={userID} routes={routes} setRoutes={setRoutes}/>
                 )}
               />
               <Route exact path='/events' component={Events} />
@@ -114,15 +126,7 @@ export default function App() {
               <Route exact path='/' component={About}/>
 
               {/* Organisation routes */}
-              {routes.map(route => {
-                return <Route
-                  key={route} 
-                  exact path={'/' + {route}} 
-                  render={(props) => ( 
-                    <Organisation {...props} route={route} />
-                  )}
-                />
-              })}
+              {routesComponents}
 
               {/* URL with no matching route calls the 404 component */}
               <Route component={NotFound}/>
