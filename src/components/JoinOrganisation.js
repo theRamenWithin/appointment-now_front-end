@@ -64,7 +64,7 @@ export default function JoinOrganisation(props) {
                 organization_name: values.nameSearch
             }
         
-            axios.post('http://localhost:3001/organisation/search', {organizationSearch})
+            axios.post('%DOMAIN%/organisation/search', {organizationSearch})
             .then(response => {
                 if (response.data.organizations) {
                     setSearchResult(response.data.organizations)
@@ -85,7 +85,7 @@ export default function JoinOrganisation(props) {
                 organization_name: values.nameCheck
             }
         
-            axios.post('http://localhost:3001/organisation/namecheck', {organizationUnique})
+            axios.post('%DOMAIN%/organisation/namecheck', {organizationUnique})
             .then(response => {
                 if (response.data.unique) {
                     setNameUnique(response.data.unique)
@@ -108,7 +108,7 @@ export default function JoinOrganisation(props) {
             organization_name: values.nameCheck
         }  
         
-        axios.post('http://localhost:3001/organisation/create', {organization})
+        axios.post('%DOMAIN%/organisation/create', {organization})
         .then(response => {
             console.log(response.data)
             if (response.data.created) {
@@ -128,7 +128,7 @@ export default function JoinOrganisation(props) {
             role: 0
         }
 
-        axios.post('http://localhost:3001/organisation/join', {organization_role})
+        axios.post('%DOMAIN%/organisation/join', {organization_role})
         .then(response => {
             console.log(response.data)
             if (response.data.joined) {

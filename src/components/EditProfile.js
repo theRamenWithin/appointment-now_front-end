@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
+// import Container from '@material-ui/core/Container';
 
 // Custom styling that overrides Material UI defaults
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +71,7 @@ export default function EditProfile() {
         }
     
         // Create a POST request to update profile
-        axios.post('http://localhost:3001/profile', {profile}, {withCredentials: true})
+        axios.post('%DOMAIN%/profile', {profile}, {withCredentials: true})
         .then(response => {
             if (response.data.updated) {
                 setValues(response.data)

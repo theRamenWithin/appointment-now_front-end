@@ -14,7 +14,7 @@ import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { DropzoneArea } from 'material-ui-dropzone';
+// import { DropzoneArea } from 'material-ui-dropzone';
 
 // Images
 import Banner from '../assets/modal-org-splash.jpg';
@@ -80,7 +80,7 @@ export default function EditOrganisation() {
   };
 
   const handleSubmit = () => {
-    axios.post('http://localhost:3001/organisation/edit', {values}, {withCredentials: true})
+    axios.post('%DOMAIN%/organisation/edit', {values}, {withCredentials: true})
     .then(response => {
       if (response.data.updated) {
 

@@ -60,7 +60,7 @@ export default function SignUp(props) {
     }
 
     // Create a POST request to sign up
-    axios.post('http://localhost:3001/sign_up', {user}, {withCredentials: true})
+    axios.post('%DOMAIN%/sign_up', {user}, {withCredentials: true})
     .then(response => {
       if (response.data.created) {
         props.handleLogin(response.data)
