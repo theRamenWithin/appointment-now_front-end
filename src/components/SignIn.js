@@ -60,7 +60,7 @@ export default function SignIn(props) {
     }
 
     // Create a POST request to login
-    axios.post('%DOMAIN%/login', {user}, {withCredentials: true})
+    axios.post(process.env.REACT_APP_DOMAIN + '/login', {user}, {withCredentials: true})
     .then(response => {
       if (response.data.logged_in) {
         props.handleLogin(response.data)

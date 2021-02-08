@@ -80,7 +80,7 @@ export default function EditOrganisation() {
   };
 
   const handleSubmit = () => {
-    axios.post('%DOMAIN%/organisation/edit', {values}, {withCredentials: true})
+    axios.post(process.env.REACT_APP_DOMAIN + '/organisation/edit', {values}, {withCredentials: true})
     .then(response => {
       if (response.data.updated) {
 

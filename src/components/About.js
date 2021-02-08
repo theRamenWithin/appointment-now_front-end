@@ -49,7 +49,7 @@ export default function About() {
           organization_name: values.nameSearch
       }
     
-      axios.post('%DOMAIN%/organisation/search', {organizationSearch})
+      axios.post(process.env.REACT_APP_DOMAIN + '/organisation/search', {organizationSearch})
       .then(response => {
         if (response.data.organizations) {
           setSearchResult(response.data.organizations)

@@ -40,7 +40,7 @@ export default function App() {
 
   // Axios request for getting organizational routes
   useEffect(() => {
-    axios.get('%DOMAIN%/organisation/org_routes')
+    axios.get(process.env.REACT_APP_DOMAIN + '/organisation/org_routes')
     .then(response => { setRoutes(response.data.organizations_routes) })
     .catch(error => console.log('api errors:', error))
   },[])
@@ -57,7 +57,7 @@ export default function App() {
 
   // Axios GET request to API method to check if there is a logged in user
   const loginStatus = () => {
-    axios.get('%DOMAIN%/logged_in', {withCredentials: true})
+    axios.get(process.env.REACT_APP_DOMAIN + '/logged_in', {withCredentials: true})
     .then(response => {
       if (response.data.logged_in) {
         handleLogin(response.data.user)

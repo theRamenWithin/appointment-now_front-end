@@ -71,7 +71,7 @@ export default function EditProfile() {
         }
     
         // Create a POST request to update profile
-        axios.post('%DOMAIN%/profile', {profile}, {withCredentials: true})
+        axios.post(process.env.REACT_APP_DOMAIN + '/profile', {profile}, {withCredentials: true})
         .then(response => {
             if (response.data.updated) {
                 setValues(response.data)

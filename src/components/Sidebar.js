@@ -77,7 +77,7 @@ export default function ClippedDrawer(props) {
   }
 
   const handleClick = () => {
-    axios.delete('%DOMAIN%/logout', {withCredentials: true})
+    axios.delete(process.env.REACT_APP_DOMAIN + '/logout', {withCredentials: true})
     .then(response => {
       console.log(response.data)
       if (response.data.logged_out) {
