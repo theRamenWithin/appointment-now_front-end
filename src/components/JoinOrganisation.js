@@ -105,14 +105,14 @@ export default function JoinOrganisation(props) {
         e.preventDefault()
 
         let organization = {
-            organization_name: values.nameCheck,
-            user: props.user.id
+            organization_name: values.nameCheck
         }  
         
         axios.post('http://localhost:3001/organisation/create', {organization})
         .then(response => {
             console.log(response.data)
             if (response.data.created) {
+                props.setRoutes(props.routes << response.data.organization_path)
                 return <Redirect to={"/" + response.data.organization_path} />
             } else {
                setErrors(response.data.erorrs) 
@@ -121,18 +121,18 @@ export default function JoinOrganisation(props) {
         .catch(error => console.log('api errors:', error))
     };
 
-    const handleJoin = (nameID) => {
+    const handleJoin = (org_name, org_id) => {
         let organization_role = {
-            organization_id: nameID,
-            user_id: props.user.id,
+            organization_id: org_id,
+            user_id: props.userID,
             role: 0
         }
 
         axios.post('http://localhost:3001/organisation/join', {organization_role})
         .then(response => {
             console.log(response.data)
-            if (response.data.join) {
-                return <Redirect to={"/" + response.data.organization} />
+            if (response.data.joined) {
+                <Redirect to={"/" + org_name.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-")} />
             } else {
                setErrors(response.data.erorrs) 
             }
@@ -203,7 +203,7 @@ export default function JoinOrganisation(props) {
                                 }}
                             />
                         </Grid>
-                        <Grid container xs={11} justify="flex-start" alignItems="center">
+                        <Grid container justify="flex-start" alignItems="center">
                             {nameUnique !== ''
                                 ? nameUnique === true
                                     ? <><CheckCircleOutlineIcon /> Name Available</>
