@@ -152,7 +152,7 @@ export default function EditOrganisation() {
               required
               fullWidth
               label="Address Line 1"
-              name="address1"
+              name="address_line_1"
               value={values.address_line_1}
               onChange={handleInputChange}
               InputProps={{
@@ -167,7 +167,7 @@ export default function EditOrganisation() {
               variant="outlined"
               fullWidth
               label="Address Line 2"
-              name="address2"
+              name="address_line_2"
               value={values.address_line_2}
               onChange={handleInputChange}
               InputProps={{
@@ -248,7 +248,7 @@ export default function EditOrganisation() {
               required
               fullWidth
               label="Telephone No."
-              name="telephone"
+              name="phone"
               value={values.phone}
               onChange={handleInputChange}
               InputProps={{
